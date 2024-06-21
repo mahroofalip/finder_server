@@ -1,10 +1,11 @@
 // src/routes/index.ts
 import { Router } from 'express';
+import authMiddleware from '../middleware/authMiddleware';
 
 const router = Router();
 
 // Add any general routes here
-router.get('/hello', (req, res) => {
+router.get('/',authMiddleware, (req, res) => {
   res.json({ message: 'Hello, world!' });
 });
 

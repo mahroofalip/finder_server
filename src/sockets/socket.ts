@@ -20,7 +20,8 @@ interface RoomNameData {
 export const initSocket = (server: HttpServer) => {
     const io = new SocketIOServer(server, {
         cors: {
-            origin: "*",
+            origin: 'http://localhost:3000', // your frontend URL
+           credentials: true,
         },
     });
 
