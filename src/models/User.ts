@@ -1,6 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 import bcrypt from 'bcryptjs';
+import Message from './Message';
 
 interface UserAttributes {
   id: number;
@@ -11,7 +12,7 @@ interface UserAttributes {
   lastName: string;
 }
 
-interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
+interface UserCreationAttributes extends Optional<UserAttributes, 'id'> { }
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number;
@@ -79,5 +80,7 @@ User.init(
     // }
   }
 );
+
+
 
 export default User;

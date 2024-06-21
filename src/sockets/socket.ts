@@ -4,13 +4,13 @@ import { Server as SocketIOServer } from "socket.io";
 import { Server as HttpServer } from "http";
 
 interface JoinRoomData {
-    room: string;
+    room_id: string;
 }
 
 interface MessageData {
     sender_id :any;
     receiver_id:any
-    room: string;
+    room_id: string;
     message_content: string;
     timestamp: any,
     status: 'unread'
@@ -18,7 +18,7 @@ interface MessageData {
 }
 
 interface RoomNameData {
-    room: string;
+    room_id: string;
     roomName: string;
 }
 
@@ -36,15 +36,17 @@ export const initSocket = (server: HttpServer) => {
         console.log("Socket connected:", socket.id);
 
         socket.on('join-room', (data: JoinRoomData) => {
-            socket.join(data.room);
+            console.log(data,"join-room");
+            
+            socket.join(data.room_id);
         });
 
         socket.on('send-message', (data: MessageData) => {
-            socket.to(data.room).emit('receive-message', data);
+            socket.to(data.room_id).emit('receive-message', data);
         });
 
         socket.on('send-roomname', (data: RoomNameData) => {
-            socket.to(data.room).emit('receive-roomname', data);
+            socket.to(data.room_id).emit('receive-roomname', data);
         });
 
         socket.on('disconnect', () => {

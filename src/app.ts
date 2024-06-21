@@ -22,12 +22,15 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
 import apiRoutes from './routes';
-import userRoutes from './routes/userRoutes';
+import authRoutes from './routes/authRoutes';
 import messageRoutes from './routes/messageRoutes';
+import usersRoutes from './routes/usersRoutes';
+
 
 
 app.use('/api', apiRoutes);
-app.use('/api/users', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/users', usersRoutes);
 app.use('/api/messages', messageRoutes);
 
 

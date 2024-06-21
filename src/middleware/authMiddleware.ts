@@ -2,7 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { verifyToken } from '../utils/jwt';
 import AppError from '../utils/AppError';
 
-const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
+interface AuthenticatedRequest extends Request {
+  user?: { id: number };
+}
+
+const authMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
 
@@ -13,7 +17,8 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
     const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token) as { id: number };
 
-    next();
+    req.user = decoded; // Attach the decoded token to the req object
+    next(); // Call the next middleware function
   } catch (error) {
     next(error);
   }
