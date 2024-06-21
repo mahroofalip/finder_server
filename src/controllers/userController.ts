@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import User from '../models/User';
 import AppError from '../utils/AppError';
 import { generateToken } from '../utils/jwt';
-import { hashPassword, comparePassword } from '../utils/password';
+import { hashPassword } from '../utils/password';
 
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -21,17 +21,17 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
       return
     } else {
 
-      const hashedPassword = await hashPassword(password);
+      const hashedPassword = password //await hashPassword(password);
       const newUser = await User.create({ email, password: hashedPassword, phone, firstName, lastName });
-  
+
       const token = generateToken(newUser.id);
-  
+
       res.status(200).json({
         status: 'success',
         token,
         user: newUser
       });
-  
+
     }
 
 
@@ -43,20 +43,18 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
-    console.log(req.body,"req.body");
-    
-    // sugu@gmail.in
+    console.log(req.body, "req.body");
+
     if (!email || !password) {
       throw new AppError('All fields are required', 400);
     }
 
     const user = await User.findOne({ where: { email } });
-    // h@gmail.in
 
-    console.log(user,"h@gmail.in");
-    let check = await user?.comparePassword(password)
-    console.log(check,"check");
-    
+    let check = user?.password === password
+    // await user?.comparePassword(password)
+    console.log(check, "check");
+
     if (!user || !(check)) {
       throw new AppError('Invalid email or password', 401);
     }
@@ -70,7 +68,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
       user
     });
 
-    
+
   } catch (error) {
     next(error);
   }

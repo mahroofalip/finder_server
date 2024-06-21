@@ -8,8 +8,13 @@ interface JoinRoomData {
 }
 
 interface MessageData {
+    sender_id :any;
+    receiver_id:any
     room: string;
-    message: string;
+    message_content: string;
+    timestamp: any,
+    status: 'unread'
+
 }
 
 interface RoomNameData {
@@ -17,11 +22,13 @@ interface RoomNameData {
     roomName: string;
 }
 
+let io: SocketIOServer;
+
 export const initSocket = (server: HttpServer) => {
-    const io = new SocketIOServer(server, {
+    io = new SocketIOServer(server, {
         cors: {
-            origin: 'http://localhost:3000', // your frontend URL
-           credentials: true,
+            origin: '*', // your frontend URL http://localhost:3000
+            credentials: true,
         },
     });
 
@@ -29,17 +36,14 @@ export const initSocket = (server: HttpServer) => {
         console.log("Socket connected:", socket.id);
 
         socket.on('join-room', (data: JoinRoomData) => {
-            console.log(`Socket ${socket.id} joining room: ${data.room}`);
             socket.join(data.room);
         });
 
         socket.on('send-message', (data: MessageData) => {
-            console.log(`Socket ${socket.id} sending message to room ${data.room}: ${data.message}`);
             socket.to(data.room).emit('receive-message', data);
         });
 
         socket.on('send-roomname', (data: RoomNameData) => {
-            console.log(`Socket ${socket.id} sending room name to room ${data.room}: ${data.roomName}`);
             socket.to(data.room).emit('receive-roomname', data);
         });
 
@@ -47,4 +51,13 @@ export const initSocket = (server: HttpServer) => {
             console.log(`Socket disconnected: ${socket.id}`);
         });
     });
+};
+
+export const notifyUser = (room: string, message: string) => {
+    if (io) {
+        io.to(room).emit('receive-message', { room, message });
+        console.log(`Notification sent to room ${room}: ${message}`);
+    } else {
+        console.error('Socket.IO not initialized.');
+    }
 };

@@ -23,9 +23,13 @@ app.use(express.static(path.join(__dirname, '../public')));
 // Routes
 import apiRoutes from './routes';
 import userRoutes from './routes/userRoutes';
+import messageRoutes from './routes/messageRoutes';
+
 
 app.use('/api', apiRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/messages', messageRoutes);
+
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/index.html'));

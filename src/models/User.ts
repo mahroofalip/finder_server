@@ -22,9 +22,16 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public lastName!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
-  public async comparePassword(candidatePassword: string): Promise<boolean> {
-    return bcrypt.compare(candidatePassword, this.password);
-  }
+  // public async comparePassword(candidatePassword: string): Promise<boolean> {
+  //   console.log('Comparing password:', candidatePassword);
+  //   console.log('Stored hashed password:', this.password);
+  //   // return bcrypt.compare(candidatePassword, this.password);
+  //   const isMatch = await bcrypt.compare(candidatePassword, this.password);
+
+  //   console.log('Password match result:', isMatch);
+  //   return isMatch;
+
+  // }
 }
 
 User.init(
@@ -59,13 +66,17 @@ User.init(
   {
     sequelize,
     tableName: 'FINDER_USERS',
-    hooks: {
-      beforeSave:async(user)=>{
-        if (user.changed('password')) {
-          user.password =  await bcrypt.hash(user.password,10);
-        }
-      }
-    }
+    // hooks: {
+    //   beforeSave:async(user)=>{
+    //     if (user.changed('password')) {
+    //       console.log('Hashing password before saving');
+
+    //       user.password =  await bcrypt.hash(user.password,10);
+    //       console.log('Hashed password:', user.password);
+
+    //     }
+    //   }
+    // }
   }
 );
 

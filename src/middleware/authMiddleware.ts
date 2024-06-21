@@ -12,11 +12,6 @@ const authMiddleware = async (req: Request, res: Response, next: NextFunction) =
 
     const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token) as { id: number };
-    
-    console.log(req,"llllllllllllllllllllllll");
-    
-    // Attach user ID to request object
-    // req.user = { id: decoded.id };
 
     next();
   } catch (error) {
