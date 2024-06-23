@@ -3,11 +3,13 @@ import User from '../models/User';
 import AppError from '../utils/AppError';
 import { generateToken } from '../utils/jwt';
 import { hashPassword } from '../utils/password';
+interface AuthenticatedRequest extends Request {
+  user?: { id: number };
+}
 
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-
     const { email, password, phone, firstName, lastName } = req.body;
 
     const userExists = await User.findOne({ where: { email } });
@@ -16,29 +18,45 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
       res.status(401).json({
         status: 'exist',
         message: "User already exists",
-        user: null
+        user: null,
       });
-      return
+      return;
     } else {
-
-      const hashedPassword = password //await hashPassword(password);
-      const newUser = await User.create({ email, password: hashedPassword, phone, firstName, lastName });
+      // const hashedPassword = await hashPassword(password);
+      const newUser = await User.create({
+        email,
+        password: password,
+        phone,
+        firstName,
+        lastName,
+        isOnline: false,
+        profileImage: "https://randomuser.me/api/portraits/men/19.jpg",
+        city: null,
+        gender: null,
+        userName: null,
+        birthDate: null,
+        height: null,
+        weight: null,
+        eyeColor: null,
+        hairColor: null,
+        maritalStatus: null,
+        age: '23',
+      });
 
       const token = generateToken(newUser.id);
 
       res.status(200).json({
         status: 'success',
         token,
-        user: newUser
+        user: newUser,
       });
-
     }
-
-
   } catch (error) {
     next(error);
   }
 };
+
+
 
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -73,3 +91,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
     next(error);
   }
 };
+
+
+
+

@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import authMiddleware from '../middleware/authMiddleware';
-import {  getUserChats, sendMessage } from '../controllers/messageController';
+import {  getUserChats, createRoomAndSendMessage } from '../controllers/messageController';
 
 const router = Router();
 
-router.post('/sendMessage', authMiddleware, sendMessage);
+router.post('/createRoomAndSendMessage', authMiddleware, createRoomAndSendMessage);
 router.get('/getUserChats', authMiddleware, getUserChats);
 // router.post('/messagedFriends', authMiddleware, messagedFriends);
 

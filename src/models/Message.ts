@@ -5,7 +5,7 @@ import User from './User';
 interface MessageAttributes {
     id: number;
     message_content: string;
-    room_id: string;
+    room_id: number;
     status: string;
 }
 
@@ -14,7 +14,7 @@ interface MessageCreationAttributes extends Optional<MessageAttributes, 'id'> { 
 class Message extends Model<MessageAttributes, MessageCreationAttributes> implements MessageAttributes {
     public id!: number;
     public message_content!: string;
-    public room_id!: string;
+    public room_id!: number;
     public status!: string;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
@@ -32,7 +32,7 @@ Message.init(
             allowNull: false,
         },
         room_id: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         status: {
