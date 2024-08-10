@@ -1,6 +1,7 @@
 
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/User';
+import EyeColor from '../models/EyeColor';
 
 interface AuthenticatedRequest extends Request {
     user?: { id: number };

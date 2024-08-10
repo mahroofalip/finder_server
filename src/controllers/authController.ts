@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/User';
+import EyeColor from '../models/EyeColor';
 import AppError from '../utils/AppError';
 import { generateToken } from '../utils/jwt';
 import { hashPassword } from '../utils/password';
@@ -32,13 +33,13 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         isOnline: false,
         profileImage: "https://randomuser.me/api/portraits/men/19.jpg",
         city: null,
-        gender: null,
+        genderId: null,
         userName: null,
         birthDate: null,
         height: null,
         weight: null,
-        eyeColor: null,
-        hairColor: null,
+        eyeColorId: null,
+        hairColorId: null,
         maritalStatus: null,
         age: '23',
       });

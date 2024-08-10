@@ -25,6 +25,7 @@ import apiRoutes from './routes';
 import authRoutes from './routes/authRoutes';
 import messageRoutes from './routes/messageRoutes';
 import usersRoutes from './routes/usersRoutes';
+import mapRoutes from './routes/mapRoutes';
 
 
 
@@ -32,6 +33,7 @@ app.use('/api', apiRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/messages', messageRoutes);
+app.use('/api/map', mapRoutes); // Register the map routes
 
 
 app.get('/', (req, res) => {

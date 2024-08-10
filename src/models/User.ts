@@ -1,6 +1,9 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 import bcrypt from 'bcryptjs';
+import EyeColor from './EyeColor';
+import HairColor from './HairColor';
+import Gender from './Gender';
 
 interface UserAttributes {
   id: number;
@@ -14,13 +17,13 @@ interface UserAttributes {
   isOnline: boolean;
   profileImage: string | null;
   city: string | null;
-  gender: string | null;
+  genderId: number | null; // Foreign key for Gender
   userName: string | null;
   birthDate: string | null;
   height: string | null;
   weight: string | null;
-  eyeColor: string | null;
-  hairColor: string | null;
+  eyeColorId: number | null; // Foreign key for EyeColor
+  hairColorId: number | null; // Foreign key for HairColor
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> { }
@@ -39,13 +42,13 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public isOnline!: boolean;
   public profileImage!: string | null;
   public city!: string | null;
-  public gender!: string | null;
+  public genderId!: number | null; // Foreign key for Gender
   public userName!: string | null;
   public birthDate!: string | null;
   public height!: string | null;
   public weight!: string | null;
-  public eyeColor!: string | null;
-  public hairColor!: string | null;
+  public eyeColorId!: number | null; // Foreign key for EyeColor
+  public hairColorId!: number | null; // Foreign key for HairColor
 
   public async comparePassword(candidatePassword: string): Promise<boolean> {
     return bcrypt.compare(candidatePassword, this.password);
@@ -55,7 +58,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
 User.init(
   {
     id: {
-      type: DataTypes.INTEGER.UNSIGNED,
+      type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
@@ -105,10 +108,13 @@ User.init(
       allowNull: true,
       defaultValue: null
     },
-    gender: {
-      type: DataTypes.STRING,
+    genderId: {
+      type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: null
+      references: {
+        model: Gender,
+        key: 'id',
+      },
     },
     userName: {
       type: DataTypes.STRING,
@@ -130,21 +136,26 @@ User.init(
       allowNull: true,
       defaultValue: null
     },
-    eyeColor: {
-      type: DataTypes.STRING,
+    eyeColorId: {
+      type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: null
+      references: {
+        model: EyeColor,
+        key: 'id',
+      },
     },
-    hairColor: {
-      type: DataTypes.STRING,
+    hairColorId: {
+      type: DataTypes.INTEGER,
       allowNull: true,
-      defaultValue: null
+      references: {
+        model: HairColor,
+        key: 'id',
+      },
     },
   },
   {
     sequelize,
     tableName: 'FINDER_USERS',
-
   }
 );
 

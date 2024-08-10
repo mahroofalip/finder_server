@@ -54,7 +54,6 @@ export const initSocket = (server: HttpServer) => {
 
 export const notifyUser = (room: number, message: string) => {
     if (io) {
-        console.log(room, message, "receive-message /////////////////////////////////////");
         io.emit('receive-message', { room, message });
         console.log(`Notification sent to room ${room}: ${message}`);
     } else {

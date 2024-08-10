@@ -5,6 +5,8 @@ import { Op } from 'sequelize';
 import Room from '../models/Rooms';
 import sequelize from '../config/database';
 import User from '../models/User';
+import EyeColor from '../models/EyeColor';
+
 
 interface AuthenticatedRequest extends Request {
     user?: { id: number };

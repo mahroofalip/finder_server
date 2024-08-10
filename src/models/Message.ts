@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
-import User from './User';
+import Room from './Rooms'; // Import Room model
 
 interface MessageAttributes {
     id: number;
@@ -23,7 +23,7 @@ class Message extends Model<MessageAttributes, MessageCreationAttributes> implem
 Message.init(
     {
         id: {
-            type: DataTypes.INTEGER.UNSIGNED,
+            type: DataTypes.INTEGER,
             autoIncrement: true,
             primaryKey: true,
         },
@@ -46,5 +46,6 @@ Message.init(
     }
 );
 
+Message.belongsTo(Room, { foreignKey: 'room_id' }); // Define the relationship
 
 export default Message;
