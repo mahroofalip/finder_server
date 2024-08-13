@@ -29,7 +29,7 @@ HairColor.init(
   },
   {
     sequelize,
-    tableName: 'FINDER_HAIR_COLORS',
+    tableName: 'FINDER_HAIRCOLORS',
     timestamps: true,
   }
 );

@@ -7,7 +7,7 @@ interface AuthenticatedRequest extends Request {
 }
 
 const authMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-  console.log('gggggggggggsssf');
+  console.log('llllllllllllllllllll');
   
   try {
     const authHeader = req.headers.authorization;
@@ -22,6 +22,7 @@ const authMiddleware = async (req: AuthenticatedRequest, res: Response, next: Ne
     req.user = decoded; // Attach the decoded token to the req object
     next(); // Call the next middleware function
   } catch (error) {
+    console.log(error);
     next(error);
   }
 };

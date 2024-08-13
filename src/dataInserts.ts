@@ -2,6 +2,8 @@ import sequelize from './config/database';
 import Gender from './models/Gender';
 import EyeColor from './models/EyeColor';
 import HairColor from './models/HairColor';
+import Profession from './models/Profession';
+import Education from './models/Education';
 
 // Predefined data
 const genders = [
@@ -17,6 +19,19 @@ const eyeColors = [
 
 const hairColors = [
   'Black', 'Brown', 'Blonde', 'Red', 'Gray', 'White'
+];
+
+const professions = [
+  'Software Developer', 'Data Scientist', 'Product Manager', 'Designer',
+  'Teacher', 'Engineer', 'Doctor', 'Nurse', 'Lawyer', 'Accountant',
+  'Chef', 'Architect', 'Musician', 'Artist', 'Writer', 'Journalist',
+  'Scientist', 'Business Analyst', 'Marketing Specialist', 'Sales Manager',
+  'Consultant', 'Entrepreneur', 'Social Worker', 'Civil Servant'
+];
+
+const educationLevels = [
+  'High School Diploma', 'Associate Degree', 'Bachelor\'s Degree', 'Master\'s Degree',
+  'Doctorate', 'Certificate', 'Diploma', 'Postdoctoral Research', 'Trade School'
 ];
 
 const insertData = async () => {
@@ -38,6 +53,18 @@ const insertData = async () => {
       await HairColor.findOrCreate({ where: { hairColor: color } });
     }
     console.log('Hair colors inserted.');
+
+    // Insert Professions
+    for (const profession of professions) {
+      await Profession.findOrCreate({ where: { profession } });
+    }
+    console.log('Professions inserted.');
+
+    // Insert Education Levels
+    for (const education of educationLevels) {
+      await Education.findOrCreate({ where: { education } });
+    }
+    console.log('Education levels inserted.');
   } catch (error) {
     console.error('Error inserting data:', error);
   }

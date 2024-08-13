@@ -1,37 +1,37 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
-interface EyeColorAttributes {
+interface ProfessionAttributes {
   id: number;
-  eyeColor: string;
+  profession: string;
 }
 
-interface EyeColorCreationAttributes extends Optional<EyeColorAttributes, 'id'> { }
+interface ProfessionCreationAttributes extends Optional<ProfessionAttributes, 'id'> { }
 
-class EyeColor extends Model<EyeColorAttributes, EyeColorCreationAttributes> implements EyeColorAttributes {
+class Profession extends Model<ProfessionAttributes, ProfessionCreationAttributes> implements ProfessionAttributes {
   public id!: number;
-  public eyeColor!: string;
+  public profession!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
-EyeColor.init(
+Profession.init(
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    eyeColor: {
+    profession: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
   {
     sequelize,
-    tableName: 'FINDER_EYECOLORS',
+    tableName: 'FINDER_PROFESSIONS',
     timestamps: true,
   }
 );
 
-export default EyeColor;
+export default Profession;

@@ -1,37 +1,37 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
-interface EyeColorAttributes {
+interface EducationAttributes {
   id: number;
-  eyeColor: string;
+  education: string;
 }
 
-interface EyeColorCreationAttributes extends Optional<EyeColorAttributes, 'id'> { }
+interface EducationCreationAttributes extends Optional<EducationAttributes, 'id'> { }
 
-class EyeColor extends Model<EyeColorAttributes, EyeColorCreationAttributes> implements EyeColorAttributes {
+class Education extends Model<EducationAttributes, EducationCreationAttributes> implements EducationAttributes {
   public id!: number;
-  public eyeColor!: string;
+  public education!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
-EyeColor.init(
+Education.init(
   {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
     },
-    eyeColor: {
+    education: {
       type: DataTypes.STRING,
       allowNull: false,
     },
   },
   {
     sequelize,
-    tableName: 'FINDER_EYECOLORS',
+    tableName: 'FINDER_EDUCATIONS',
     timestamps: true,
   }
 );
 
-export default EyeColor;
+export default Education;
