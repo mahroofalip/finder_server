@@ -1,13 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/User';
-import EyeColor from '../models/EyeColor';
 import AppError from '../utils/AppError';
 import { generateToken } from '../utils/jwt';
-import { hashPassword } from '../utils/password';
-interface AuthenticatedRequest extends Request {
-  user?: { id: number };
-}
-
+import { generateUniqueUsername } from '../utils/usernameGenerator';
 
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -23,25 +18,23 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
       });
       return;
     } else {
-      // const hashedPassword = await hashPassword(password);
+      // Generate a unique username
+      const uniqueUsername = await generateUniqueUsername();
+
+      // Create a new user
       const newUser = await User.create({
         email,
-        password: password,
+        password: password, // Ideally, hash the password before storing it
         phone,
         firstName,
         lastName,
         isOnline: false,
         profileImage: "https://randomuser.me/api/portraits/men/19.jpg",
-        city: null,
-        genderId: null,
-        userName: null,
+        userName: uniqueUsername, // Use the generated unique username
         birthDate: null,
         height: null,
         weight: null,
-        eyeColorId: null,
-        hairColorId: null,
         maritalStatus: null,
-        age: '23',
       });
 
       const token = generateToken(newUser.id);
@@ -57,12 +50,10 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
   }
 };
 
-
-
+// Login function
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password } = req.body;
-    console.log(req.body, "req.body");
 
     if (!email || !password) {
       throw new AppError('All fields are required', 400);
@@ -70,11 +61,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
 
     const user = await User.findOne({ where: { email } });
 
-    let check = user?.password === password
-    // await user?.comparePassword(password)
-    console.log(check, "check");
-
-    if (!user || !(check)) {
+    if (!user || user.password !== password) {
       throw new AppError('Invalid email or password', 401);
     }
 
@@ -86,13 +73,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
       message: "User Login completed Successfully",
       user
     });
-
-
   } catch (error) {
     next(error);
   }
 };
-
-
-
-
