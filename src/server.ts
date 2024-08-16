@@ -24,6 +24,7 @@ app.use(cors({
   credentials: true,
 }));
 
+
 // Sync database and start server
 sequelize.sync({ alter: true }).then(() => { // Use `alter` for non-destructive sync
   console.log('Database synchronized successfully.');

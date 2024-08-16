@@ -41,7 +41,7 @@ export const createRoomAndSendMessage = async (req: AuthenticatedRequest, res: R
 
     try {
         const { receiver_id, sender_id, message_content } = req.body;
-        console.log(req.body, "req.body");
+        // console.log(req.body, "req.body");
 
         // Check if a room already exists between the sender and receiver
         let room = await Room.findOne({
@@ -83,7 +83,7 @@ export const createRoomAndSendMessage = async (req: AuthenticatedRequest, res: R
     } catch (error) {
         // Rollback the transaction in case of error
         await transaction.rollback();
-        console.log(error);
+        // console.log(error);
         next(error);
     }
 };

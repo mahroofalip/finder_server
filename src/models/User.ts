@@ -20,8 +20,10 @@ interface UserAttributes {
   description: string | null;
   isOnline: boolean;
   profileImage: string | null;
+  profileImageKey: string | null;
   userName: string | null;
   birthDate: string | null;
+  lastActiveAt: Date | null;
   height: string | null;
   weight: string | null;
   
@@ -48,9 +50,13 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public place!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
+  public lastActiveAt!: Date;
   public maritalStatus!: string | null;
   public isOnline!: boolean;
   public profileImage!: string | null;
+  public profileImageKey!: string | null;
+
+  
   public userName!: string | null;
   public birthDate!: string | null;
   public height!: string | null;
@@ -130,13 +136,22 @@ User.init(
       allowNull: true,
       defaultValue: null
     },
-   
+    lastActiveAt: {
+      type: DataTypes.DATE,
+      allowNull: true,
+      defaultValue: null,
+    },
     isOnline: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     },
     profileImage: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: null
+    },
+    profileImageKey: {
       type: DataTypes.STRING,
       allowNull: true,
       defaultValue: null
@@ -152,6 +167,7 @@ User.init(
       allowNull: true,
       defaultValue: null
     },
+    
     height: {
       type: DataTypes.STRING,
       allowNull: true,

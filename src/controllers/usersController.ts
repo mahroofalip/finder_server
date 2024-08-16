@@ -2,6 +2,10 @@
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/User';
 import EyeColor from '../models/EyeColor';
+// import { S3 } from 'aws-sdk';
+
+import { generateUniqueUsername } from '../utils/usernameGenerator';
+import { deleteImages, uploadImages } from '../utils/uploadfiles3';
 
 interface AuthenticatedRequest extends Request {
     user?: { id: number };
@@ -16,8 +20,9 @@ export const getFinderUsers = async (req: AuthenticatedRequest, res: Response, n
             throw new Error('User not authenticated');
         }
         const userId = req.user.id;
-        const users = await User.findAll();
-        console.log(users, "users");
+        const users = await User.findAll({
+            order: [['id', 'DESC']] // 'DESC' for descending order
+        });
 
         res.status(200).send(users);
     } catch (error) {
@@ -29,7 +34,7 @@ export const getMe = async (req: AuthenticatedRequest, res: Response, next: Next
     try {
 
         const user = await User.findOne({ where: { id: req.user?.id } });
-        console.log(user, "user");
+        // console.log(user, "user");
 
         res.status(200).json({
             status: 'success',
@@ -61,24 +66,59 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
             lastName,
             maritalStatus,
             dob,
-            profileImage,
+            profileImage, // Base64 string if provided
             userName,
             height,
             weight,
+            profileImageKey, // Existing profile image key
+            profileExt,
             place,
             description,
         } = req.body;
-        let placeDis = place.description;
+        let placeDis = place?.description; // Safe access in case `place` is undefined
 
-        console.log(req.body, "req.body");
+        let profileImageUrl = '';
+        let profileImageNewKey = profileImageKey; // Default to existing key
 
+        // Check if the profileImage is a base64 string
+        const isBase64 = (str: string) => {
+            return /^data:image\/[a-zA-Z]+;base64,/.test(str);
+        };
+
+        // Check if the profileImage is an S3 URL
+        const isS3Url = (str: string) => {
+            return str.startsWith("https://finders3bucket.s3.ap-south-1.amazonaws.com");
+        };
+
+        if (profileImage && isBase64(profileImage)) {
+            // If a new valid base64 profile image is provided, delete the old one first
+            if (profileImageKey) {
+                await deleteImages(profileImageKey); // Delete old profile image
+            }
+
+            // Upload the new profile image
+            const data = await uploadImages(profileImage, "profiles", profileExt);
+            profileImageUrl = data.img_url;
+            profileImageNewKey = data.img_key;
+        } else if (profileImage && isS3Url(profileImage)) {
+            // If the profile image is an S3 URL, retain the existing image URL and key
+            profileImageUrl = profileImage;
+            profileImageNewKey = profileImageKey;
+        } else {
+            // Retain the old image URL if no new valid base64 image is provided
+            const existingUser = await User.findByPk(userId);
+            if (existingUser) {
+                profileImageUrl = existingUser.profileImage || ''; 
+            }
+        }
 
         const updatedUser = await User.update(
             {
                 firstName,
                 lastName,
                 maritalStatus,
-                profileImage,
+                profileImage: profileImageUrl, // Use the new URL or the existing one
+                profileImageKey: profileImageNewKey, // Use the new key or the existing one
                 description,
                 userName,
                 height,
@@ -109,6 +149,7 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
         });
 
     } catch (error) {
+        // console.log(error, "llllllllKKkkkkupdate-user");
         next(error);
     }
 };

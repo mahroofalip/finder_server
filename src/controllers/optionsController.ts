@@ -15,13 +15,13 @@ interface AuthenticatedRequest extends Request {
 
 export const getGenders = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        console.log("//////////////////// getGenders");
+        // console.log("//////////////////// getGenders");
 
         if (!req.user) {
             throw new Error('User not authenticated');
         }
         const genders = await Gender.findAll();
-        console.log(genders, "users");
+        // console.log(genders, "users");
 
         res.status(200).send(genders);
     } catch (error) {
@@ -31,13 +31,13 @@ export const getGenders = async (req: AuthenticatedRequest, res: Response, next:
 
 export const getEducation = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        console.log("//////////////////// getEducation");
+        // console.log("//////////////////// getEducation");
 
         if (!req.user) {
             throw new Error('User not authenticated');
         }
         const education = await Education.findAll();
-        console.log(education, "education");
+        // console.log(education, "education");
 
         res.status(200).send(education);
     } catch (error) {
@@ -48,13 +48,13 @@ export const getEducation = async (req: AuthenticatedRequest, res: Response, nex
 
 export const getProfession = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        console.log("//////////////////// getProfession");
+        // console.log("//////////////////// getProfession");
 
         if (!req.user) {
             throw new Error('User not authenticated');
         }
         const profession = await Profession.findAll();
-        console.log(profession, "profession");
+        // console.log(profession, "profession");
 
         res.status(200).send(profession);
     } catch (error) {
@@ -65,13 +65,13 @@ export const getProfession = async (req: AuthenticatedRequest, res: Response, ne
 
 export const getHairColor = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        console.log("//////////////////// getHairColor");
+        // console.log("//////////////////// getHairColor");
 
         if (!req.user) {
             throw new Error('User not authenticated');
         }
         const hairColor = await HairColor.findAll();
-        console.log(hairColor, "hairColor");
+        // console.log(hairColor, "hairColor");
 
         res.status(200).send(hairColor);
     } catch (error) {
@@ -81,13 +81,13 @@ export const getHairColor = async (req: AuthenticatedRequest, res: Response, nex
 
 export const getEyeColor = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        console.log("//////////////////// getEyeColor");
+        // console.log("//////////////////// getEyeColor");
 
         if (!req.user) {
             throw new Error('User not authenticated');
         }
         const eyeColor = await EyeColor.findAll();
-        console.log(eyeColor, "eyeColor");
+        // console.log(eyeColor, "eyeColor");
 
         res.status(200).send(eyeColor);
     } catch (error) {

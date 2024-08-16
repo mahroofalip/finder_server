@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import path from 'path';
 import AppError from './utils/AppError';
 import errorHandler from './middleware/errorHandler';
+// import compression from 'compression';
 
 // Load environment variables
 dotenv.config();
@@ -19,7 +20,14 @@ app.use(express.urlencoded({ extended: true }));
 
 // Serve static files
 app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.json({ limit: '200mb' }));
+app.use(express.urlencoded({ limit: '200mb', extended: true }));
 
+// app.use(compression());
+app.use((req, res, next) => {
+  // console.log('Request size:', req.headers['content-length']);
+  next();
+});
 // Routes
 import apiRoutes from './routes';
 import authRoutes from './routes/authRoutes';
