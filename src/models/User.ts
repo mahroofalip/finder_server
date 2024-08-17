@@ -26,7 +26,7 @@ interface UserAttributes {
   lastActiveAt: Date | null;
   height: string | null;
   weight: string | null;
-  
+  interests: string | null;
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> { }
@@ -55,7 +55,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public isOnline!: boolean;
   public profileImage!: string | null;
   public profileImageKey!: string | null;
-
+  public interests!: string | null;
   
   public userName!: string | null;
   public birthDate!: string | null;
@@ -101,12 +101,16 @@ User.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    // 
+    
     profession: {
       type: DataTypes.STRING,
       allowNull: true,
     },
     description: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    interests: {
       type: DataTypes.STRING,
       allowNull: true,
     },

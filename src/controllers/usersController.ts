@@ -74,9 +74,14 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
             profileImageKey, // Existing profile image key
             profileExt,
             place,
+            interests,
             description,
         } = req.body;
         let placeDis = place?.description; // Safe access in case `place` is undefined
+
+        const interestsString = Array.isArray(interests) && interests.length > 0
+            ? interests.join(',')
+            : '';
 
         let profileImageUrl = '';
         let profileImageNewKey = profileImageKey; // Default to existing key
@@ -131,7 +136,8 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
                 profession,
                 displayName,
                 place: placeDis,
-                birthDate: dob
+                birthDate: dob,
+                interests: interestsString
             },
             {
                 where: { id: userId },

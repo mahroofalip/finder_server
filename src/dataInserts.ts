@@ -1,9 +1,9 @@
-import sequelize from './config/database';
 import Gender from './models/Gender';
 import EyeColor from './models/EyeColor';
 import HairColor from './models/HairColor';
 import Profession from './models/Profession';
 import Education from './models/Education';
+import Interests from './models/Interests';
 
 // Predefined data
 const genders = [
@@ -32,6 +32,28 @@ const professions = [
 const educationLevels = [
   'High School Diploma', 'Associate Degree', 'Bachelor\'s Degree', 'Master\'s Degree',
   'Doctorate', 'Certificate', 'Diploma', 'Postdoctoral Research', 'Trade School'
+];
+
+const interests = [
+  'Music', 'Dance', 'Cinema', 'Traveling', 'Hiking', 'Photography', 'Cooking', 'Baking',
+  'Reading', 'Writing', 'Blogging', 'Vlogging', 'Gaming', 'Fitness', 'Yoga', 'Meditation',
+  'Cycling', 'Running', 'Swimming', 'Tennis', 'Basketball', 'Football', 'Baseball', 'Golf',
+  'Fishing', 'Camping', 'Surfing', 'Skiing', 'Snowboarding', 'Rock Climbing', 'Martial Arts',
+  'Chess', 'Board Games', 'Card Games', 'Puzzles', 'Art', 'Drawing', 'Painting', 'Sculpting',
+  'Crafting', 'Knitting', 'Sewing', 'Gardening', 'Home Improvement', 'DIY Projects', 'Collecting',
+  'Antiques', 'Coins', 'Stamps', 'Comics', 'Books', 'Vinyl Records', 'Movies', 'Anime', 'Manga',
+  'Photography', 'Videography', 'Filmmaking', 'Acting', 'Theater', 'Musicals', 'Concerts',
+  'Live Music', 'Karaoke', 'Pub', 'Clubbing', 'Dancing', 'Shopping', 'Fashion', 'Jewelry',
+  'Makeup', 'Skincare', 'Hair Styling', 'Traveling Abroad', 'Road Trips', 'Cruises', 'Camping',
+  'Picnics', 'Outdoor Adventures', 'Nature Walks', 'Bird Watching', 'Astronomy', 'Science Fiction',
+  'Fantasy', 'History', 'Museums', 'Exhibitions', 'Volunteering', 'Charity Work', 'Animal Rights',
+  'Environmentalism', 'Technology', 'Gadgets', 'Programming', 'Web Development', 'Social Media',
+  'Podcasting', 'Public Speaking', 'Networking', 'Entrepreneurship', 'Investing',
+  'Romantic Movies', 'Romantic Dinners', 'Romantic Getaways', 'Romantic Walks', 'Romantic Music',
+  'Romantic Poetry', 'Romantic Novels', 'Romantic Gestures', 'Romantic Picnics', 'Romantic Cruises',
+  'Semi-Romantic Movies', 'Semi-Romantic Dinners', 'Semi-Romantic Getaways', 'Semi-Romantic Walks',
+  'Semi-Romantic Music', 'Semi-Romantic Poetry', 'Semi-Romantic Novels', 'Semi-Romantic Gestures',
+  'Semi-Romantic Picnics', 'Semi-Romantic Cruises', 'Normal'
 ];
 
 const insertData = async () => {
@@ -63,6 +85,9 @@ const insertData = async () => {
     // Insert Education Levels
     for (const education of educationLevels) {
       await Education.findOrCreate({ where: { education } });
+    }
+    for (const intrest of interests) {
+      await Interests.findOrCreate({ where: { intrest } });
     }
     // console.log('Education levels inserted.');
   } catch (error) {

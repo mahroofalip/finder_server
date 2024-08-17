@@ -5,8 +5,7 @@ import User from '../models/User';
 export const updateOnlineStatusJob = cron.schedule('* * * * *', async () => {
   try {
     const oneMinuteAgo = new Date(Date.now() - 1 * 60 * 1000);
-
-    await User.update(
+     User.update(
       { isOnline: false },
       {
         where: {
@@ -17,7 +16,6 @@ export const updateOnlineStatusJob = cron.schedule('* * * * *', async () => {
         },
       }
     );
-
     console.log('Updated user online status.');
   } catch (error) {
     console.error('Error updating user online status:', error);

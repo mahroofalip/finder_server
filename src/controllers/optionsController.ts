@@ -8,6 +8,7 @@ import Gender from '../models/Gender';
 import Education from '../models/Education';
 import Profession from '../models/Profession';
 import HairColor from '../models/HairColor';
+import Interests from '../models/Interests';
 
 interface AuthenticatedRequest extends Request {
     user?: { id: number };
@@ -15,14 +16,10 @@ interface AuthenticatedRequest extends Request {
 
 export const getGenders = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        // console.log("//////////////////// getGenders");
-
         if (!req.user) {
             throw new Error('User not authenticated');
         }
         const genders = await Gender.findAll();
-        // console.log(genders, "users");
-
         res.status(200).send(genders);
     } catch (error) {
         next(error);
@@ -31,14 +28,10 @@ export const getGenders = async (req: AuthenticatedRequest, res: Response, next:
 
 export const getEducation = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        // console.log("//////////////////// getEducation");
-
         if (!req.user) {
             throw new Error('User not authenticated');
         }
         const education = await Education.findAll();
-        // console.log(education, "education");
-
         res.status(200).send(education);
     } catch (error) {
         next(error);
@@ -48,15 +41,24 @@ export const getEducation = async (req: AuthenticatedRequest, res: Response, nex
 
 export const getProfession = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        // console.log("//////////////////// getProfession");
-
         if (!req.user) {
             throw new Error('User not authenticated');
         }
         const profession = await Profession.findAll();
-        // console.log(profession, "profession");
-
         res.status(200).send(profession);
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+export const getinterests= async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    try {
+        if (!req.user) {
+            throw new Error('User not authenticated');
+        }
+        const interests = await Interests.findAll();
+        res.status(200).send(interests);
     } catch (error) {
         next(error);
     }
@@ -65,14 +67,10 @@ export const getProfession = async (req: AuthenticatedRequest, res: Response, ne
 
 export const getHairColor = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        // console.log("//////////////////// getHairColor");
-
         if (!req.user) {
             throw new Error('User not authenticated');
         }
         const hairColor = await HairColor.findAll();
-        // console.log(hairColor, "hairColor");
-
         res.status(200).send(hairColor);
     } catch (error) {
         next(error);
@@ -81,14 +79,10 @@ export const getHairColor = async (req: AuthenticatedRequest, res: Response, nex
 
 export const getEyeColor = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        // console.log("//////////////////// getEyeColor");
-
         if (!req.user) {
             throw new Error('User not authenticated');
         }
         const eyeColor = await EyeColor.findAll();
-        // console.log(eyeColor, "eyeColor");
-
         res.status(200).send(eyeColor);
     } catch (error) {
         next(error);
