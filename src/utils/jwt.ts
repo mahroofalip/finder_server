@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-const secret = process.env.JWT_SECRET || 'your_jwt_secret';
+const secret = process.env.JWT_SECRET || 'Finder@123';
 
 export const generateToken = (id: number): string => {
   return jwt.sign({ id }, secret, {

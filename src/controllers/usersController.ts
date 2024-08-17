@@ -6,6 +6,7 @@ import EyeColor from '../models/EyeColor';
 
 import { generateUniqueUsername } from '../utils/usernameGenerator';
 import { deleteImages, uploadImages } from '../utils/uploadfiles3';
+import { updateUserActivity } from '../utils/AutoInactive';
 
 interface AuthenticatedRequest extends Request {
     user?: { id: number };
@@ -108,7 +109,7 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
             // Retain the old image URL if no new valid base64 image is provided
             const existingUser = await User.findByPk(userId);
             if (existingUser) {
-                profileImageUrl = existingUser.profileImage || ''; 
+                profileImageUrl = existingUser.profileImage || '';
             }
         }
 
@@ -144,12 +145,25 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
 
         res.status(200).json({
             status: 'success',
-            user: updatedUser[1][0],  
+            user: updatedUser[1][0],
             message: "User Profile Successfully Updated",
         });
 
     } catch (error) {
         // console.log(error, "llllllllKKkkkkupdate-user");
         next(error);
+    }
+};
+
+
+
+
+
+export const UpdateActiveInactive = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    try {
+        updateUserActivity(req.user?.id, true);
+        res.status(200).json({ message: 'User activity updated successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to update user activity' });
     }
 };

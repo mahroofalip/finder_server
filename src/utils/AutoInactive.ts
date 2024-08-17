@@ -25,7 +25,8 @@ export const updateOnlineStatusJob = cron.schedule('* * * * *', async () => {
 });
 
 export async function updateUserActivity(userId: any,status:boolean) {
-    await User.update(
+    console.log(userId,status);
+     User.update(
       { lastActiveAt: new Date(), isOnline: status },  // Update the lastActiveAt timestamp and set isOnline to true
       {
         where: {
