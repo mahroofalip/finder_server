@@ -69,10 +69,12 @@ export const createRoomAndSendMessage = async (req: AuthenticatedRequest, res: R
             message_content: message_content,
             room_id: room.id,
             status: "unread",
+            receiverId: receiver_id,
+            senderId: sender_id
         }, { transaction });
 
         // Notify the user
-         notifyUser( message_content);
+        notifyUser(message_content);
 
         // Commit the transaction
         await transaction.commit();
@@ -93,7 +95,7 @@ export const getMessagesByRoomId = async (req: AuthenticatedRequest, res: Respon
         if (!req.user) {
             throw new Error('User not authenticated');
         }
-        const { roomId } = req.body; 
+        const { roomId } = req.body;
 
         if (!roomId) {
             throw new Error('Room ID is required');
@@ -112,7 +114,6 @@ export const getMessagesByRoomId = async (req: AuthenticatedRequest, res: Respon
 
 
 // sendMessage
-
 export const createNewMessage = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const transaction = await sequelize.transaction();
 
@@ -126,19 +127,38 @@ export const createNewMessage = async (req: AuthenticatedRequest, res: Response,
             throw new Error('Room not found');
         }
 
+        // Ensure req.user?.id is defined
+        const userId = req.user?.id?.toString();
+        if (!userId) {
+            throw new Error('User ID is required');
+        }
+
+        let receiverId: string = "0";
+        const senderId: string = userId;
+
+        if (room.receiverId.toString() === userId) {
+            receiverId = room.senderId.toString();
+        } else if (room.senderId.toString() === userId) {
+            receiverId = room.receiverId.toString();
+        } else {
+            throw new Error('User is not part of this room');
+        }
+
         // Create a new message with the provided roomId
         const message = await Message.create({
             message_content: newMessage,
             room_id: room.id,
             status: 'unread',
+            receiverId: receiverId,
+            senderId: senderId
         }, { transaction });
 
         // Update the existing room's last_message_content
         await room.update({
             last_message_content: newMessage,
         }, { transaction });
-        // Notify the user 
 
+        // Notify the user
         notifyUser(message.dataValues);
 
         // Commit the transaction
