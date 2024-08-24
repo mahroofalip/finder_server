@@ -1,6 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
-import User from './User'; // Import User model
+import User from './User'; 
 
 interface RoomAttributes {
     id: number;
@@ -46,5 +46,6 @@ Room.init(
     }
 );
 
-
+Room.belongsTo(User, { as: 'Sender', foreignKey: 'senderId' });
+Room.belongsTo(User, { as: 'Receiver', foreignKey: 'receiverId' });
 export default Room;

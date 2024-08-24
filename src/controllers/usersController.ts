@@ -35,7 +35,6 @@ export const getMe = async (req: AuthenticatedRequest, res: Response, next: Next
     try {
 
         const user = await User.findOne({ where: { id: req.user?.id } });
-        // console.log(user, "user");
 
         res.status(200).json({
             status: 'success',
@@ -47,6 +46,22 @@ export const getMe = async (req: AuthenticatedRequest, res: Response, next: Next
         next(error);
     }
 };
+
+export const getProfile = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { profileId } = req.params; 
+        const userProfile = await User.findByPk(profileId); 
+
+        if (!userProfile) {
+            return res.status(404).json({ message: 'User profile not found' });
+        }
+
+        res.status(200).json(userProfile);
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 
 export const updateUserProfile = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
@@ -76,12 +91,17 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
             place,
             interests,
             description,
+            lookingFor
         } = req.body;
         let placeDis = place?.description; // Safe access in case `place` is undefined
 
         const interestsString = Array.isArray(interests) && interests.length > 0
             ? interests.join(',')
             : '';
+
+            const lookingForString = Array.isArray(lookingFor) && lookingFor.length > 0
+            ? lookingFor.join(',')
+            : '';   
 
         let profileImageUrl = '';
         let profileImageNewKey = profileImageKey; // Default to existing key
@@ -117,7 +137,8 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
                 profileImageUrl = existingUser.profileImage || '';
             }
         }
-
+        
+    
         const updatedUser = await User.update(
             {
                 firstName,
@@ -137,7 +158,8 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
                 displayName,
                 place: placeDis,
                 birthDate: dob,
-                interests: interestsString
+                interests: interestsString,
+                lookingFor:lookingForString
             },
             {
                 where: { id: userId },
@@ -156,7 +178,6 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
         });
 
     } catch (error) {
-        // console.log(error, "llllllllKKkkkkupdate-user");
         next(error);
     }
 };
@@ -173,3 +194,4 @@ export const UpdateActiveInactive = async (req: AuthenticatedRequest, res: Respo
         res.status(500).json({ message: 'Failed to update user activity' });
     }
 };
+

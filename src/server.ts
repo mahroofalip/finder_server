@@ -16,7 +16,7 @@ const server = http.createServer(app);
 
 // Initialize WebSocket
 initSocket(server);
-insertData()
+// insertData()
 
 // Set up CORS
 app.use(cors({

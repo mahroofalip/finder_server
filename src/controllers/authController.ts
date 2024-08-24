@@ -29,7 +29,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         firstName,
         lastName,
         isOnline: false,
-        profileImage: 'https://finders3bucket.s3.ap-south-1.amazonaws.com/public/male-avatar.jpg',
+        profileImage: 'https://picsum.photos/seed/picsum/200/300',
         userName: uniqueUsername, // Use the generated unique username
         birthDate: null,
         height: null,

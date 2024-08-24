@@ -16,14 +16,12 @@ export const updateOnlineStatusJob = cron.schedule('* * * * *', async () => {
         },
       }
     );
-    console.log('Updated user online status.');
   } catch (error) {
     console.error('Error updating user online status:', error);
   }
 });
 
 export async function updateUserActivity(userId: any,status:boolean) {
-    console.log(userId,status);
      User.update(
       { lastActiveAt: new Date(), isOnline: status },  // Update the lastActiveAt timestamp and set isOnline to true
       {

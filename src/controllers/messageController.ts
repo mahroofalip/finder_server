@@ -41,7 +41,6 @@ export const createRoomAndSendMessage = async (req: AuthenticatedRequest, res: R
 
     try {
         const { receiver_id, sender_id, message_content } = req.body;
-        // console.log(req.body, "req.body");
 
         // Check if a room already exists between the sender and receiver
         let room = await Room.findOne({
@@ -73,7 +72,7 @@ export const createRoomAndSendMessage = async (req: AuthenticatedRequest, res: R
         }, { transaction });
 
         // Notify the user
-        await notifyUser(room.id, message_content);
+         notifyUser( message_content);
 
         // Commit the transaction
         await transaction.commit();
@@ -83,9 +82,73 @@ export const createRoomAndSendMessage = async (req: AuthenticatedRequest, res: R
     } catch (error) {
         // Rollback the transaction in case of error
         await transaction.rollback();
-        // console.log(error);
         next(error);
     }
 };
 
 
+
+export const getMessagesByRoomId = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    try {
+        if (!req.user) {
+            throw new Error('User not authenticated');
+        }
+        const { roomId } = req.body; 
+
+        if (!roomId) {
+            throw new Error('Room ID is required');
+        }
+        const messages = await Message.findAll({
+            where: { room_id: roomId },
+            order: [['createdAt', 'ASC']] // Optional: to sort messages by creation time
+        });
+
+        res.status(200).send({ status: true, messages });
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
+// sendMessage
+
+export const createNewMessage = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const transaction = await sequelize.transaction();
+
+    try {
+        const { roomId, newMessage } = req.body;
+
+        // Fetch the room by roomId
+        const room = await Room.findByPk(roomId, { transaction });
+
+        if (!room) {
+            throw new Error('Room not found');
+        }
+
+        // Create a new message with the provided roomId
+        const message = await Message.create({
+            message_content: newMessage,
+            room_id: room.id,
+            status: 'unread',
+        }, { transaction });
+
+        // Update the existing room's last_message_content
+        await room.update({
+            last_message_content: newMessage,
+        }, { transaction });
+        // Notify the user 
+
+        notifyUser(message.dataValues);
+
+        // Commit the transaction
+        await transaction.commit();
+
+        // Send the response back to the client
+        res.status(200).send({ room, message });
+    } catch (error) {
+        // Rollback the transaction in case of an error
+        await transaction.rollback();
+        next(error);
+    }
+};

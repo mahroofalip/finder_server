@@ -27,6 +27,7 @@ interface UserAttributes {
   height: string | null;
   weight: string | null;
   interests: string | null;
+  lookingFor: string | null;
 }
 
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> { }
@@ -56,7 +57,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public profileImage!: string | null;
   public profileImageKey!: string | null;
   public interests!: string | null;
-  
+  public lookingFor!: string | null;
   public userName!: string | null;
   public birthDate!: string | null;
   public height!: string | null;
@@ -107,11 +108,15 @@ User.init(
       allowNull: true,
     },
     description: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(2000),
       allowNull: true,
     },
     interests: {
-      type: DataTypes.STRING,
+      type: DataTypes.STRING(2000),
+      allowNull: true,
+    },
+    lookingFor: {
+      type: DataTypes.STRING(2000),
       allowNull: true,
     },
     eyeColor: {

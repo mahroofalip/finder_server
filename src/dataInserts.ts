@@ -62,25 +62,21 @@ const insertData = async () => {
     for (const gender of genders) {
       await Gender.findOrCreate({ where: { gender } });
     }
-    // console.log('Genders inserted.');
 
     // Insert EyeColors
     for (const color of eyeColors) {
       await EyeColor.findOrCreate({ where: { eyeColor: color } });
     }
-    // console.log('Eye colors inserted.');
 
     // Insert HairColors
     for (const color of hairColors) {
       await HairColor.findOrCreate({ where: { hairColor: color } });
     }
-    // console.log('Hair colors inserted.');
 
     // Insert Professions
     for (const profession of professions) {
       await Profession.findOrCreate({ where: { profession } });
     }
-    // console.log('Professions inserted.');
 
     // Insert Education Levels
     for (const education of educationLevels) {
@@ -89,7 +85,6 @@ const insertData = async () => {
     for (const intrest of interests) {
       await Interests.findOrCreate({ where: { intrest } });
     }
-    // console.log('Education levels inserted.');
   } catch (error) {
     console.error('Error inserting data:', error);
   }
