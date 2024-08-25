@@ -37,4 +37,6 @@ Like.init(
     }
 );
 Like.belongsTo(User, { foreignKey: 'userId' }); 
+Like.belongsTo(User, { foreignKey: 'profileId' }); // Define the relationship
+
 export default Like;

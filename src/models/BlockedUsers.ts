@@ -43,5 +43,6 @@ BlockedUsers.init(
 );
 
 BlockedUsers.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
+BlockedUsers.belongsTo(User, { foreignKey: 'profileId' }); // Define the relationship
 
 export default BlockedUsers;

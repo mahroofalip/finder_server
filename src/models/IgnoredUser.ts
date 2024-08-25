@@ -38,4 +38,5 @@ IgnoredUser.init(
     }
 );
 IgnoredUser.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
+IgnoredUser.belongsTo(User, { foreignKey: 'profileId' }); 
 export default IgnoredUser;
