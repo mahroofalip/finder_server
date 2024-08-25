@@ -4,6 +4,10 @@ import sequelize from './config/database';
 import { initSocket } from './sockets/socket';
 import dotenv from 'dotenv';
 import cors from 'cors';
+// import Likes from './models/Likes';
+// import Visiters from './models/Visiters';
+// import BlockedUsers from './models/BlokedUsers';
+// import IgnoredUsers from './models/IgnoredUsers';
 // import insertData from './dataInserts';
 
 // Load environment variables
@@ -25,7 +29,7 @@ const server = http.createServer(app);
 initSocket(server);
 
 // Sync database and start server
-sequelize.sync({ alter: true }) // Use `alter` for non-destructive sync
+sequelize.sync({ force: true }) // Use `alter` for non-destructive sync
   .then(() => {
     console.log('Database synchronized successfully.');
     

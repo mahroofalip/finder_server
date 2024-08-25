@@ -1,21 +1,21 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 
-interface InterestsAttributes {
+interface InterestAttributes {
   id: number;
   intrest: string;
 }
 
-interface InterestsCreationAttributes extends Optional<InterestsAttributes, 'id'> { }
+interface InterestCreationAttributes extends Optional<InterestAttributes, 'id'> { }
 
-class Interests extends Model<InterestsAttributes, InterestsCreationAttributes> implements InterestsAttributes {
+class Interest extends Model<InterestAttributes, InterestCreationAttributes> implements InterestAttributes {
   public id!: number;
   public intrest!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
 }
 
-Interests.init(
+Interest.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -34,4 +34,4 @@ Interests.init(
   }
 );
 
-export default Interests;
+export default Interest;

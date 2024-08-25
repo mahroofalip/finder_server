@@ -2,16 +2,16 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 import User from './User';
 
-interface IgnoredUsersAttributes {
+interface VisitorsAttributes {
     id: number;
     userId: number;
     profileId: number;
 
 }
 
-interface BlokesCreationAttributes extends Optional<IgnoredUsersAttributes, 'id'> { }
+interface BlokesCreationAttributes extends Optional<VisitorsAttributes, 'id'> { }
 
-class IgnoredUsers extends Model<IgnoredUsersAttributes, BlokesCreationAttributes> implements IgnoredUsersAttributes {
+class Visitors extends Model<VisitorsAttributes, BlokesCreationAttributes> implements VisitorsAttributes {
     public id!: number;
     public userId!: number;
     public profileId!: number;
@@ -19,7 +19,7 @@ class IgnoredUsers extends Model<IgnoredUsersAttributes, BlokesCreationAttribute
     public readonly updatedAt!: Date;
 }
 
-IgnoredUsers.init(
+Visitors.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -37,10 +37,12 @@ IgnoredUsers.init(
     },
     {
         sequelize,
-        tableName: 'FINDER_IGNOREDUSERS',
+        tableName: 'FINDER_VISITORS',
         timestamps: true,
     }
 );
-IgnoredUsers.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
+Visitors.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
+Visitors.belongsTo(User, { foreignKey: 'profileId' }); // Define the relationship
 
-export default IgnoredUsers;
+
+export default Visitors;

@@ -2,16 +2,16 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 import User from './User';
 
-interface LikesAttributes {
+interface LikeAttributes {
     id: number;
     userId: number;
     profileId: number;
 
 }
 
-interface LikesCreationAttributes extends Optional<LikesAttributes, 'id'> { }
+interface LikeCreationAttributes extends Optional<LikeAttributes, 'id'> { }
 
-class Likes extends Model<LikesAttributes, LikesCreationAttributes> implements LikesAttributes {
+class Like extends Model<LikeAttributes, LikeCreationAttributes> implements LikeAttributes {
     public id!: number;
     public userId!: number;
     public profileId!: number;
@@ -19,7 +19,7 @@ class Likes extends Model<LikesAttributes, LikesCreationAttributes> implements L
     public readonly updatedAt!: Date;
 }
 
-Likes.init(
+Like.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -41,7 +41,7 @@ Likes.init(
         timestamps: true,
     }
 );
-Likes.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
+Like.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
 
 
-export default Likes;
+export default Like;

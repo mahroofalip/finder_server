@@ -3,11 +3,11 @@ import EyeColor from './models/EyeColor';
 import HairColor from './models/HairColor';
 import Profession from './models/Profession';
 import Education from './models/Education';
-import Interests from './models/Interests';
-import Likes from './models/Likes';
-import Visiters from './models/Visiters';
-import BlockedUsers from './models/BlokedUsers';
-import IgnoredUsers from './models/IgnoredUsers';
+import Interest from './models/Interest';
+// import Likes from './models/Likes';
+// import Visiters from './models/Visiters';
+// import BlockedUsers from './models/BlokedUsers';
+// import IgnoredUsers from './models/IgnoredUsers';
 
 // Predefined data
 const genders = [
@@ -87,7 +87,7 @@ const insertData = async () => {
       await Education.findOrCreate({ where: { education } });
     }
     for (const intrest of interests) {
-      await Interests.findOrCreate({ where: { intrest } });
+      await Interest.findOrCreate({ where: { intrest } });
     }
   } catch (error) {
     console.error('Error inserting data:', error);
