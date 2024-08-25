@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
+import User from './User';
 
 interface BlockedUsersAttributes {
     id: number;
@@ -40,5 +41,7 @@ BlockedUsers.init(
         timestamps: true,
     }
 );
+
+BlockedUsers.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
 
 export default BlockedUsers;

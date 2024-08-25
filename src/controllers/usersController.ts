@@ -1,7 +1,8 @@
 
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/User';
-import EyeColor from '../models/EyeColor';
+
+
 // import { S3 } from 'aws-sdk';
 
 import { generateUniqueUsername } from '../utils/usernameGenerator';

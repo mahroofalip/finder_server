@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
+import User from './User';
 
 interface VisitersAttributes {
     id: number;
@@ -40,5 +41,8 @@ Visiters.init(
         timestamps: true,
     }
 );
+Visiters.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
+Visiters.belongsTo(User, { foreignKey: 'profileId' }); // Define the relationship
+
 
 export default Visiters;

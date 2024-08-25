@@ -18,6 +18,8 @@ export const initSocket = (server: HttpServer) => {
 };
 export const notifyUser = (message: any) => {
     if (io) {
+        console.log('llllll');
+        
         io.emit('receive-message', message);
     } 
 };

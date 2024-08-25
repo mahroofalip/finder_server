@@ -53,7 +53,9 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 // Login function
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email, password } = req.body;
+    console.log(req.body,"req.body");
+    
+    const { email, password, rememberMe } = req.body;
 
     if (!email || !password) {
       throw new AppError('All fields are required', 400);
@@ -65,7 +67,8 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
       throw new AppError('Invalid email or password', 401);
     }
 
-    const token = generateToken(user.id);
+    const tokenExpiry = rememberMe ? '7d' : '1d'; // Extend the token to 7 days if "Remember me" is checked
+    const token = generateToken(user.id, tokenExpiry);
 
     res.status(200).json({
       status: 'success',

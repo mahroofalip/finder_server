@@ -1,9 +1,11 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
+import User from './User';
 
 interface UsersPostsAttributes {
     id: number;
     postUrl: string;
+    userId: number;
     postCaption: string;
     postLikes: number;
 
@@ -14,6 +16,7 @@ interface BlokesCreationAttributes extends Optional<UsersPostsAttributes, 'id'> 
 class UsersPosts extends Model<UsersPostsAttributes, BlokesCreationAttributes> implements UsersPostsAttributes {
     public id!: number;
     public postUrl!: string;
+    public userId!: number;
     public postCaption!: string;
     public postLikes!: number;
     public readonly createdAt!: Date;
@@ -40,6 +43,10 @@ UsersPosts.init(
             type: DataTypes.NUMBER,
             allowNull: true,
         },
+        userId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
     },
     {
         sequelize,
@@ -48,4 +55,5 @@ UsersPosts.init(
     }
 );
 
+UsersPosts.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
 export default UsersPosts;

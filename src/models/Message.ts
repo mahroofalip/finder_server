@@ -60,6 +60,5 @@ Message.init(
 );
 
 Message.belongsTo(Room, { foreignKey: 'room_id' }); // Define the relationship
-// Room.belongsTo(User, { as: 'Sender', foreignKey: 'senderId' });
-// Room.belongsTo(User, { as: 'Receiver', foreignKey: 'receiverId' });
+
 export default Message;

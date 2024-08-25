@@ -1,5 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
+import User from './User';
 
 interface IgnoredUsersAttributes {
     id: number;
@@ -40,5 +41,6 @@ IgnoredUsers.init(
         timestamps: true,
     }
 );
+IgnoredUsers.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
 
 export default IgnoredUsers;
