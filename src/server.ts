@@ -4,11 +4,8 @@ import sequelize from './config/database';
 import { initSocket } from './sockets/socket';
 import dotenv from 'dotenv';
 import cors from 'cors';
-// import Likes from './models/Likes';
-// import Visiters from './models/Visiters';
-// import BlockedUsers from './models/BlokedUsers';
-// import IgnoredUsers from './models/IgnoredUsers';
-// import insertData from './dataInserts';
+import insertData from './dataInserts';
+import { syncEducation, syncEyeColor, syncGender, syncHairColor, syncInterest, syncMessage, syncProfession, syncRoom, syncUser, syncUsersPosts, syncVisitors, syncBlockedUsers, syncIgnoredUser, syncLike } from './models'; // Adjust import path
 
 // Load environment variables
 dotenv.config();
@@ -28,24 +25,38 @@ const server = http.createServer(app);
 // Initialize WebSocket
 initSocket(server);
 
-// Sync database and start server
-sequelize.sync({ force: true }) // Use `alter` for non-destructive sync
+// Sync individual models
+async function syncModels() {
+  await syncEducation();
+  await syncEyeColor();
+  await syncGender();
+  await syncHairColor();
+  await syncInterest();
+  await syncMessage();
+  await syncProfession();
+  await syncRoom();
+  await syncUser();
+  await syncUsersPosts();
+  await syncVisitors();
+  await syncBlockedUsers();
+  await syncIgnoredUser();
+  await syncLike();
+}
+
+// Sync models and start server
+syncModels()
   .then(() => {
-    console.log('Database synchronized successfully.');
-    
-    // Insert initial data
-    // return insertData();
+    console.log('Models synchronized successfully.');
+    return insertData();
   })
   .then(() => {
     console.log('Initial data inserted successfully.');
-    
-    // Start the server
     server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
   .catch((err) => {
-    console.error('Unable to connect to the database or insert data:', err);
+    console.error('Unable to sync models, insert data, or start server:', err);
   });
 
 // Graceful shutdown

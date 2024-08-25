@@ -4,10 +4,10 @@ import HairColor from './models/HairColor';
 import Profession from './models/Profession';
 import Education from './models/Education';
 import Interest from './models/Interest';
-// import Likes from './models/Likes';
-// import Visiters from './models/Visiters';
-// import BlockedUsers from './models/BlokedUsers';
-// import IgnoredUsers from './models/IgnoredUsers';
+import Like from './models/Like';
+import Visitors from './models/Visitors';
+import BlockedUsers from './models/BlockedUsers';
+import IgnoredUser from './models/IgnoredUser';
 
 // Predefined data
 const genders = [

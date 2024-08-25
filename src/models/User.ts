@@ -1,7 +1,6 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 import bcrypt from 'bcryptjs';
-
 interface UserAttributes {
   id: number;
   email: string;
@@ -29,9 +28,7 @@ interface UserAttributes {
   interests: string | null;
   lookingFor: string | null;
 }
-
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> { }
-
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number;
   public email!: string;
@@ -194,5 +191,4 @@ User.init(
     tableName: 'FINDER_USERS',
   }
 );
-
 export default User;

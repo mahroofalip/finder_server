@@ -8,7 +8,7 @@ import Gender from '../models/Gender';
 import Education from '../models/Education';
 import Profession from '../models/Profession';
 import HairColor from '../models/HairColor';
-import Interests from '../models/Interests';
+import Interest from '../models/Interest';
 
 interface AuthenticatedRequest extends Request {
     user?: { id: number };
@@ -57,7 +57,7 @@ export const getinterests= async (req: AuthenticatedRequest, res: Response, next
         if (!req.user) {
             throw new Error('User not authenticated');
         }
-        const interests = await Interests.findAll();
+        const interests = await Interest.findAll();
         res.status(200).send(interests);
     } catch (error) {
         next(error);

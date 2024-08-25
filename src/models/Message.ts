@@ -2,7 +2,6 @@ import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 import Room from './Rooms'; // Import Room model
 import User from './User';
-
 interface MessageAttributes {
     id: number;
     message_content: string;
@@ -11,9 +10,7 @@ interface MessageAttributes {
     receiverId: string;
     status: string;
 }
-
 interface MessageCreationAttributes extends Optional<MessageAttributes, 'id'> { }
-
 class Message extends Model<MessageAttributes, MessageCreationAttributes> implements MessageAttributes {
     public id!: number;
     public message_content!: string;
@@ -24,7 +21,6 @@ class Message extends Model<MessageAttributes, MessageCreationAttributes> implem
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 }
-
 Message.init(
     {
         id: {
@@ -58,7 +54,5 @@ Message.init(
         tableName: 'FINDER_MESSAGES',
     }
 );
-
 Message.belongsTo(Room, { foreignKey: 'room_id' }); // Define the relationship
-
 export default Message;

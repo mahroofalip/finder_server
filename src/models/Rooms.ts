@@ -47,5 +47,5 @@ Room.init(
 );
 
 Room.belongsTo(User, { as: 'Sender', foreignKey: 'senderId' });
-Room.belongsTo(User, { as: 'Receiver', foreignKey: 'receiverId' });
+Room.belongsTo(User, { as: 'Receiver', foreignKey: 'receiverId'});
 export default Room;
