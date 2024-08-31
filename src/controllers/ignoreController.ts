@@ -1,10 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import User from '../models/User';
 import IgnoredUser from '../models/IgnoredUser';
+import Like from '../models/Like';
 interface AuthenticatedRequest extends Request {
     user?: { id: number };
 }
-// Add a ignoredUser
 export const ignoreUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     console.log(req.body, "req.bodyreq.body");
     const { profileId } = req.body;
@@ -12,7 +12,6 @@ export const ignoreUser = async (req: AuthenticatedRequest, res: Response, next:
     if (!userId || !profileId) {
         return res.status(400).json({ message: 'UserId and ProfileId are required' });
     }
-
     try {
         const existingIgnoredUser = await IgnoredUser.findOne({ where: { userId, profileId } });
         if (existingIgnoredUser) {
@@ -20,36 +19,38 @@ export const ignoreUser = async (req: AuthenticatedRequest, res: Response, next:
             return res.status(201).json({ message: 'You already ignored this profile' });
         }
         const ignoredUser = await IgnoredUser.create({ userId, profileId });
-
         res.status(201).json(ignoredUser);
-        
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
-
-
-// Get all ignoreduser for a user
 export const getIgnoredUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const userId = req?.user?.id;
-
     try {
-        // Fetch all ignoredUser for the userId and include the associated profile
+        // Step 1: Fetch all ignored users for the current user with profile details
         const ignoreUsers = await IgnoredUser.findAll({
-            where: { userId }, // Fetching ignored profiles for the current user
-            include: [{ model: User, as: 'profile' }] // Include the profile associated with the ignoredUser
+            where: { userId },
+            include: [{ model: User, as: 'profile' }] 
         });
 
-        // Extract the ignored profiles from the results and filter out undefined values
-        const ignoredUsers = ignoreUsers
-            .map(ignoredUser => ignoredUser.profile)
-            .filter(profile => profile !== undefined);
+        // Step 2: Map through ignored users and add `isLiked` field
+        const ignoredUsersWithLikes = await Promise.all(ignoreUsers.map(async (ignoredUser) => {
+            const isLiked = await Like.findOne({
+                where: {
+                    userId: userId,
+                    profileId: ignoredUser.profile?.id
+                }
+            });
 
-        console.log(ignoredUsers, "ignoredUsers");
+            return {
+                ...ignoredUser.profile?.toJSON(),
+                isLiked: !!isLiked // `isLiked` will be true if a Like exists, otherwise false
+            };
+        }));
 
-        // If the array is empty or contains only undefined, return an empty array
-        res.status(200).json(ignoredUsers.length > 0 ? ignoredUsers : []);
+        // Step 3: Return the list of ignored users with the `isLiked` field
+        res.status(200).json(ignoredUsersWithLikes);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
