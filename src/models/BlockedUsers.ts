@@ -17,6 +17,8 @@ class BlockedUsers extends Model<BlockedUsersAttributes, BlokesCreationAttribute
     public profileId!: number;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
+    public user?: User; // User who liked
+    public profile?: User; // Profile being liked
 }
 
 BlockedUsers.init(
@@ -42,7 +44,6 @@ BlockedUsers.init(
     }
 );
 
-BlockedUsers.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
-BlockedUsers.belongsTo(User, { foreignKey: 'profileId' }); // Define the relationship
-
+BlockedUsers.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+BlockedUsers.belongsTo(User, { foreignKey: 'profileId', as: 'profile' });
 export default BlockedUsers;

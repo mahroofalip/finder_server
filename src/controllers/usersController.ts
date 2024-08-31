@@ -11,6 +11,7 @@ import { updateUserActivity } from '../utils/AutoInactive';
 import Like from '../models/Like';
 import IgnoredUser from '../models/IgnoredUser';
 import { Op } from 'sequelize';
+import BlockedUsers from '../models/BlockedUsers';
 
 interface AuthenticatedRequest extends Request {
     user?: { id: number };
@@ -258,7 +259,6 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
         next(error);
     }
 };
-
 
 
 
