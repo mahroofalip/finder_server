@@ -3,7 +3,10 @@ import User from '../models/User';
 import AppError from '../utils/AppError';
 import { generateToken } from '../utils/jwt';
 import { generateUniqueUsername } from '../utils/usernameGenerator';
-
+const getRandomImageUrl = () => {
+  const randomNumber = Math.floor(Math.random() * 100) + 1; // Generates a number between 1 and 100
+  return `https://xsgames.co/randomusers/assets/avatars/female/${randomNumber}.jpg`;
+};
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { email, password, phone, firstName, lastName } = req.body;
@@ -20,7 +23,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
     } else {
       // Generate a unique username
       const uniqueUsername = await generateUniqueUsername();
-
+     
       // Create a new user
       const newUser = await User.create({
         email,
@@ -29,7 +32,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         firstName,
         lastName,
         isOnline: false,
-        profileImage: 'https://picsum.photos/seed/picsum/200/300',
+        profileImage: getRandomImageUrl(),
         userName: uniqueUsername, // Use the generated unique username
         birthDate: null,
         height: null,

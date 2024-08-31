@@ -16,10 +16,8 @@ export const initSocket = (server: HttpServer) => {
         });
     });
 };
-export const notifyUser = (message: any) => {
+export const notifyUser = (message: any,sender_Id: any) => {
     if (io) {
-        console.log('llllll');
-        
-        io.emit('receive-message', message);
+        io.emit('receive-message', {...message,sender_Id});
     } 
 };
