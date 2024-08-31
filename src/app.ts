@@ -35,6 +35,7 @@ import usersRoutes from './routes/usersRoutes';
 import mapRoutes from './routes/mapRoutes';
 import commonRoutes from './routes/commonRoutes';
 import likeRoutes from './routes/likeRoutes'
+import ignoreRoutes from './routes/ignoreRoutes'
 
 
 app.use('/api', apiRoutes);
@@ -44,6 +45,7 @@ app.use('/api/messages', messageRoutes);
 app.use('/api/map', mapRoutes); 
 app.use('/api/common', commonRoutes); 
 app.use('/api/like', likeRoutes); 
+app.use('/api/ignore', ignoreRoutes); 
 
 
 

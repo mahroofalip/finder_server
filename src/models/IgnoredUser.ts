@@ -14,6 +14,9 @@ class IgnoredUser extends Model<IgnoredUserAttributes, BlokesCreationAttributes>
     public profileId!: number;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
+     // Define the association properties for TypeScript
+     public user?: User; // User who liked
+     public profile?: User; // Profile being liked
 }
 IgnoredUser.init(
     {
@@ -37,6 +40,7 @@ IgnoredUser.init(
         timestamps: true,
     }
 );
-IgnoredUser.belongsTo(User, { foreignKey: 'userId' }); // Define the relationship
-IgnoredUser.belongsTo(User, { foreignKey: 'profileId' }); 
+IgnoredUser.belongsTo(User, { foreignKey: 'userId', as: 'user' }); // Alias for the user who is ignoring
+IgnoredUser.belongsTo(User, { foreignKey: 'profileId', as: 'profile' }); // Alias for the ignored profile
+ 
 export default IgnoredUser;
