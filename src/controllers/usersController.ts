@@ -1,113 +1,85 @@
-
 import { Request, Response, NextFunction } from 'express';
 import User from '../models/User';
-
-
-// import { S3 } from 'aws-sdk';
-
-import { generateUniqueUsername } from '../utils/usernameGenerator';
-import { deleteImages, uploadImages } from '../utils/uploadfiles3';
-import { updateUserActivity } from '../utils/AutoInactive';
+import { Op } from 'sequelize';
 import Like from '../models/Like';
 import IgnoredUser from '../models/IgnoredUser';
-import { Op } from 'sequelize';
 import BlockedUsers from '../models/BlockedUsers';
+import { deleteImages, uploadImages } from '../utils/uploadfiles3';
+import { updateUserActivity } from '../utils/AutoInactive';
 
 interface AuthenticatedRequest extends Request {
-    user?: { id: number };
+  user?: { id: number };
 }
 
 export const getFinderUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        if (!req.user) {
-            throw new Error('User not authenticated');
-        }
-        const userId = req.user.id;
-
-        // Step 1: Fetch all ignored profile IDs in one query
-        const ignoredProfiles = await IgnoredUser.findAll({
-            where: {
-                userId: userId
-            },
-            attributes: ['profileId']
-        });
-        const ignoredProfileIds = ignoredProfiles.map(profile => profile.profileId);
-
-        // Step 2: Fetch all users excluding ignored profiles in one query
-        const users = await User.findAll({
-            where: {
-                id: {
-                    [Op.notIn]: ignoredProfileIds
-                }
-            },
-            order: [['id', 'DESC']], // 'DESC' for descending order
-        });
-
-        // Step 3: Fetch all liked profile IDs in one query
-        const likedProfiles = await Like.findAll({
-            where: {
-                userId: userId,
-                profileId: {
-                    [Op.in]: users.map(user => user.id)
-                }
-            },
-            attributes: ['profileId']
-        });
-        const likedProfileIds = likedProfiles.map(profile => profile.profileId);
-
-        // Step 4: Add `isLiked` field and sort users
-        const usersWithLikes = users.map(user => ({
-            ...user.toJSON(),
-            isLiked: likedProfileIds.includes(user.id)
-        }));
-
-        // Sort users so that liked profiles are at the end of the list
-        const sortedUsers = usersWithLikes.sort((a, b) => {
-            if (a.isLiked === b.isLiked) return 0;
-            return a.isLiked ? 1 : -1;
-        });
-
-        res.status(200).json(sortedUsers);
+      if (!req.user) {
+        throw new Error('User not authenticated');
+      }
+      const userId = req.user.id;
+  
+      // Step 1: Fetch all ignored profile IDs in one query
+      const ignoredProfiles = await IgnoredUser.findAll({
+        where: {
+          userId: userId
+        },
+        attributes: ['profileId']
+      });
+      const ignoredProfileIds = ignoredProfiles.map(profile => profile.profileId);
+  
+      // Step 2: Fetch all blocked profile IDs (that the user has blocked)
+      const blockedProfiles = await BlockedUsers.findAll({
+        where: {
+          userId: userId, // Only profiles that this user has blocked
+        },
+        attributes: ['profileId']  // Changed to 'profileId' to match the model
+      });
+      const blockedProfileIds = blockedProfiles.map(profile => profile.profileId);
+  
+      // Step 3: Fetch all users excluding ignored and blocked profiles in one query
+      const users = await User.findAll({
+        where: {
+          id: {
+            [Op.and]: [
+              { [Op.notIn]: ignoredProfileIds },
+              { [Op.notIn]: blockedProfileIds }
+            ]
+          }
+        },
+        order: [['id', 'DESC']], // 'DESC' for descending order
+      });
+  
+      // Step 4: Fetch all liked profile IDs in one query
+      const likedProfiles = await Like.findAll({
+        where: {
+          userId: userId,
+          profileId: {
+            [Op.in]: users.map(user => user.id)
+          }
+        },
+        attributes: ['profileId']
+      });
+      const likedProfileIds = likedProfiles.map(profile => profile.profileId);
+  
+      // Step 5: Add `isLiked` field and sort users
+      const usersWithLikes = users.map(user => ({
+        ...user.toJSON(),
+        isLiked: likedProfileIds.includes(user.id)
+      }));
+  
+      // Sort users so that liked profiles are at the end of the list
+      const sortedUsers = usersWithLikes.sort((a, b) => {
+        if (a.isLiked === b.isLiked) return 0;
+        return a.isLiked ? 1 : -1;
+      });
+  
+      res.status(200).json(sortedUsers);
     } catch (error) {
-        next(error);
+      next(error);
     }
-};
-// export const getFinderUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-//     try {
-//         if (!req.user) {
-//             throw new Error('User not authenticated');
-//         }
-//         const userId = req.user.id;
-//         const users = await User.findAll({
-//             order: [['id', 'DESC']], 
-//         });
-//         const usersWithLikes = await Promise.all(users.map(async (user) => {
-//             const isIgnored = await IgnoredUser.findOne({
-//                 where: {
-//                     userId: userId,
-//                     profileId: user.id
-//                 }
-//             });
-//             if (isIgnored) {
-//                 return null;
-//             }
-//             const isLiked = await Like.findOne({
-//                 where: {
-//                     userId: userId,
-//                     profileId: user.id
-//                 }
-//             });
-//             return {
-//                 ...user.toJSON(),
-//                 isLiked: !!isLiked 
-//             };
-//         }));
-//         const filteredUsers = usersWithLikes.filter(user => user !== null);
-//         res.status(200).json(filteredUsers);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
+  };
+
+
 
 export const getMe = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {

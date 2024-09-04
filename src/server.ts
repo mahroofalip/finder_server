@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import insertData from './dataInserts';
 import { syncEducation, syncEyeColor, syncGender, syncHairColor, syncInterest, syncMessage, syncProfession, syncRoom, syncUser, syncUsersPosts, syncVisitors, syncBlockedUsers, syncIgnoredUser, syncLike } from './models'; // Adjust import path
+import { removeOldVisitorRecordsJob } from './utils/AutoRemoveVisitor';
 
 // Load environment variables
 dotenv.config();
@@ -53,6 +54,9 @@ syncModels()
     console.log('Initial data inserted successfully.');
     server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
+      removeOldVisitorRecordsJob.start();
+      console.log(`Crown Job started Successfllly`);
+
     });
   })
   .catch((err) => {

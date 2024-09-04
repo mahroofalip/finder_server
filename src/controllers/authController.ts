@@ -4,7 +4,7 @@ import AppError from '../utils/AppError';
 import { generateToken } from '../utils/jwt';
 import { generateUniqueUsername } from '../utils/usernameGenerator';
 const getRandomImageUrl = () => {
-  const randomNumber = Math.floor(Math.random() * 100) + 1; // Generates a number between 1 and 100
+  const randomNumber = Math.floor(Math.random() * 78) + 1; // Generates a number between 1 and 100
   return `https://xsgames.co/randomusers/assets/avatars/female/${randomNumber}.jpg`;
 };
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
