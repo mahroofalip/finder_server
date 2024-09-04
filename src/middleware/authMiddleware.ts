@@ -17,7 +17,6 @@ const authMiddleware = async (req: AuthenticatedRequest, res: Response, next: Ne
     req.user = decoded; 
     next(); 
   } catch (error) {
-    console.log(error,"errorerrorerrorerror");
     next(error);
   }
 };

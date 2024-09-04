@@ -6,7 +6,6 @@ interface AuthenticatedRequest extends Request {
     user?: { id: number };
 }
 export const ignoreUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    console.log(req.body, "req.bodyreq.body");
     const { profileId } = req.body;
     let userId = req?.user?.id
     if (!userId || !profileId) {

@@ -11,7 +11,6 @@ interface AuthenticatedRequest extends Request {
 
 // Add a visitor
 export const addVisitor = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    console.log(req.body, "req.bodyreq.body");
     const { profileId } = req.body;
     let userId = req?.user?.id;
 
@@ -40,7 +39,6 @@ export const addVisitor = async (req: AuthenticatedRequest, res: Response, next:
 
 export const getVisitorsForUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const userId = req?.user?.id;
-    console.log(userId, "userIduserIduserIduserIduserId");
 
     try {
         // Fetch all visits where the current user is the profile owner

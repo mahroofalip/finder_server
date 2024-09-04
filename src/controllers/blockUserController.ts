@@ -50,7 +50,6 @@ export const unblockUserProfile = async (req: AuthenticatedRequest, res: Respons
     const userId = req?.user?.id;  // Ensure userId is a number
 
     // Log to verify values
-    console.log("Attempting to unblock user:", { userId, profileId });
 
     if (!userId || typeof profileId !== 'number') {
         return res.status(400).json({ message: 'UserId and ProfileId are required and should be valid numbers' });

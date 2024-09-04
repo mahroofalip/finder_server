@@ -15,7 +15,6 @@ export const removeOldVisitorRecordsJob = cron.schedule('0 0 * * *', async () =>
       } as any, // Casting to any to bypass TypeScript's type checking
     });
 
-    console.log('Old visitor records removed successfully');
   } catch (error) {
     console.error('Error removing old visitor records:', error);
   }

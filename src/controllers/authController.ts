@@ -56,7 +56,6 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 // Login function
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    console.log(req.body,"req.body");
     
     const { email, password, rememberMe } = req.body;
 
