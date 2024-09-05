@@ -5,10 +5,12 @@ import User from '../models/User';
 import Like from '../models/Like';
 import Message from '../models/Message';
 import Room from '../models/Rooms';
+import { notifyAsBlocked } from '../sockets/socket';
 
 interface AuthenticatedRequest extends Request {
     user?: { id: number };
 }
+
 export const blockUserProfile = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     const { profileId, roomId } = req.body;
     const userId = req?.user?.id;
@@ -36,6 +38,20 @@ export const blockUserProfile = async (req: AuthenticatedRequest, res: Response,
 
         // Create a new block entry
         const blockedUser = await BlockedUsers.create({ userId, profileId });
+
+        // Fetch the user's first and last name
+        const user = await User.findOne({ where: { id: userId } });
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        // Pass the first and last name to the notify function
+        const userFullName = `${user.firstName} ${user.lastName}`;
+        const message = `${userFullName} has blocked you.`;
+        const blockedUserId = profileId; // ID of the user being blocked
+
+        notifyAsBlocked(blockedUserId, message);
         res.status(201).json(blockedUser);
     } catch (error) {
         console.error(error);

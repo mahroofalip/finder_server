@@ -21,3 +21,10 @@ export const notifyUser = (message: any,sender_Id: any) => {
         io.emit('receive-message', {...message,sender_Id});
     } 
 };
+
+export const notifyAsBlocked = (blcokedId: number, message: string) => {
+    if (io) {
+        io.emit('blocked-you-user', { blcokedId, message });
+    }
+};
+
