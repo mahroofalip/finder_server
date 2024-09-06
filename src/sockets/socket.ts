@@ -22,9 +22,9 @@ export const notifyUser = (message: any,sender_Id: any) => {
     } 
 };
 
-export const notifyAsBlocked = (blcokedId: number, message: string) => {
+export const notifyAsBlocked = (userId: number,blockedId: number, message: string) => {
     if (io) {
-        io.emit('blocked-you-user', { blcokedId, message });
+        io.emit('blocked-you-user', {userId, blockedId, message });
     }
 };
 

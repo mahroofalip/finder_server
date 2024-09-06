@@ -50,9 +50,9 @@ export const blockUserProfile = async (req: AuthenticatedRequest, res: Response,
         const userFullName = `${user.firstName} ${user.lastName}`;
         const message = `${userFullName} has blocked you.`;
         const blockedUserId = profileId; // ID of the user being blocked
-
-        notifyAsBlocked(blockedUserId, message);
-        res.status(201).json(blockedUser);
+        notifyAsBlocked(userId,blockedUserId, message);
+        
+        res.status(201).json();
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error' });
