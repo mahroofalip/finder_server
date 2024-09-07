@@ -5,6 +5,7 @@ import Like from '../models/Like';
 import { Op } from 'sequelize';
 import { LikeAttributes } from '../types/like';
 import BlockedUsers from '../models/BlockedUsers';
+import Room from '../models/Rooms';
 
 interface AuthenticatedRequest extends Request {
     user?: { id: number };
@@ -39,13 +40,17 @@ export const addVisitor = async (req: AuthenticatedRequest, res: Response, next:
 };
 
 export const getVisitorsForUser = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const userId = req?.user?.id;
+    const userId = req.user?.id;
+
+    if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+    }
 
     try {
-        // Step 1: Fetch all blocked profile IDs
+        // Step 1: Fetch all blocked profile IDs for the current user
         const blockedProfiles = await BlockedUsers.findAll({
             where: {
-                userId: userId, // Only profiles that this user has blocked
+                userId: userId // Only profiles that this user has blocked
             },
             attributes: ['profileId']
         });
@@ -73,13 +78,30 @@ export const getVisitorsForUser = async (req: AuthenticatedRequest, res: Respons
             attributes: ['profileId']
         });
 
-        // Explicitly type the parameter in the map function
         const likedProfileIds = likedProfiles.map((profile: LikeAttributes) => profile.profileId);
 
-        // Step 4: Add `isVisited` and `isLiked` fields to each visiting user
+        // Step 4: Fetch all rooms where the current user is either sender or receiver
+        const rooms = await Room.findAll({
+            where: {
+                [Op.or]: [
+                    { senderId: userId },
+                    { receiverId: userId }
+                ]
+            },
+            attributes: ['senderId', 'receiverId']
+        });
+
+        // Get a list of user IDs from rooms (those connected to the current user)
+        const roomUserIds = rooms.reduce((acc, room) => {
+            acc.push(room.senderId, room.receiverId);
+            return acc;
+        }, [] as number[]);
+
+        // Step 5: Add `isVisited` and `isLiked` fields to each visiting user, and exclude users with a room
         const visitingUsersWithStatus = await Promise.all(visits.map(async (visit) => {
             const user = visit.user;
-            if (!user || blockedProfileIds.includes(user.id)) { // Exclude blocked users
+            if (!user || blockedProfileIds.includes(user.id) || roomUserIds.includes(user.id)) {
+                // Exclude blocked users and those connected through a room
                 return null;
             }
 
@@ -101,10 +123,10 @@ export const getVisitorsForUser = async (req: AuthenticatedRequest, res: Respons
             };
         }));
 
-        // Filter out null values (if any)
+        // Step 6: Filter out null values (if any)
         const filteredVisitingUsers = visitingUsersWithStatus.filter(user => user !== null);
 
-        // Sort users so that liked profiles are at the end of the list
+        // Step 7: Sort users so that liked profiles are at the end of the list
         const sortedUsers = filteredVisitingUsers.sort((a, b) => {
             if (a?.isLiked === b?.isLiked) return 0;
             return a?.isLiked ? 1 : -1;

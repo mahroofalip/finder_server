@@ -90,17 +90,23 @@ export const unblockUserProfile = async (req: AuthenticatedRequest, res: Respons
 };
 
 
-export const getblockedProfiles = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    const userId = req?.user?.id;
+export const getBlockedProfiles = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+    const userId = req.user?.id;
+
+    if (!userId) {
+        return res.status(401).json({ message: 'User not authenticated' });
+    }
+
     try {
-        // Step 1: Fetch all ignored users for the current user with profile details
+        // Step 1: Fetch all blocked profiles for the current user with profile details
         const blockedProfiles = await BlockedUsers.findAll({
             where: { userId },
             include: [{ model: User, as: 'profile' }]
         });
 
-        // Step 2: Map through ignored users and add `isLiked` field
+        // Step 2: Map through blocked profiles and add `isLiked` field
         const blockedProfilesWithLikes = await Promise.all(blockedProfiles.map(async (blockedUser) => {
+            // Check if the current user has liked this blocked profile
             const isLiked = await Like.findOne({
                 where: {
                     userId: userId,
@@ -109,10 +115,12 @@ export const getblockedProfiles = async (req: AuthenticatedRequest, res: Respons
             });
 
             return {
-                ...blockedUser.profile?.toJSON(),
+                ...blockedUser.profile?.toJSON(), // Convert profile to JSON
                 isLiked: !!isLiked // `isLiked` will be true if a Like exists, otherwise false
             };
         }));
+
+        // Respond with the list of blocked profiles including their `isLiked` status
         res.status(200).json(blockedProfilesWithLikes);
     } catch (error) {
         console.error(error);

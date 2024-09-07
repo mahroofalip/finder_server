@@ -6,78 +6,111 @@ import IgnoredUser from '../models/IgnoredUser';
 import BlockedUsers from '../models/BlockedUsers';
 import { deleteImages, uploadImages } from '../utils/uploadfiles3';
 import { updateUserActivity } from '../utils/AutoInactive';
+import Room from '../models/Rooms';
 
 interface AuthenticatedRequest extends Request {
   user?: { id: number };
 }
 
 export const getFinderUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
-    try {
+  try {
       if (!req.user) {
-        throw new Error('User not authenticated');
+          throw new Error('User not authenticated');
       }
       const userId = req.user.id;
-  
+
       // Step 1: Fetch all ignored profile IDs in one query
       const ignoredProfiles = await IgnoredUser.findAll({
-        where: {
-          userId: userId
-        },
-        attributes: ['profileId']
+          where: {
+              userId: userId
+          },
+          attributes: ['profileId']
       });
       const ignoredProfileIds = ignoredProfiles.map(profile => profile.profileId);
-  
-      // Step 2: Fetch all blocked profile IDs (that the user has blocked)
+
+      // Step 2: Fetch all blocked profiles (that the user has blocked)
       const blockedProfiles = await BlockedUsers.findAll({
-        where: {
-          userId: userId, // Only profiles that this user has blocked
-        },
-        attributes: ['profileId']  // Changed to 'profileId' to match the model
+          where: {
+              userId: userId, // Only profiles that this user has blocked
+          },
+          attributes: ['profileId']
       });
       const blockedProfileIds = blockedProfiles.map(profile => profile.profileId);
-  
-      // Step 3: Fetch all users excluding ignored and blocked profiles in one query
-      const users = await User.findAll({
-        where: {
-          id: {
-            [Op.and]: [
-              { [Op.notIn]: ignoredProfileIds },
-              { [Op.notIn]: blockedProfileIds }
-            ]
-          }
-        },
-        order: [['id', 'DESC']], // 'DESC' for descending order
+
+      // Step 3: Fetch all rooms where the current user is either sender or receiver
+      const rooms = await Room.findAll({
+          where: {
+              [Op.or]: [
+                  { senderId: userId },
+                  { receiverId: userId }
+              ]
+          },
+          attributes: ['senderId', 'receiverId']
       });
-  
-      // Step 4: Fetch all liked profile IDs in one query
+
+      // Get a list of user IDs from rooms (those connected to the current user)
+      const roomUserIds = rooms.reduce((acc, room) => {
+          acc.push(room.senderId, room.receiverId);
+          return acc;
+      }, [] as number[]);
+
+      // Step 4: Fetch all users excluding ignored, blocked profiles, and users connected via a room
+      const users = await User.findAll({
+          where: {
+              id: {
+                  [Op.and]: [
+                      { [Op.notIn]: ignoredProfileIds },
+                      { [Op.notIn]: blockedProfileIds },
+                      { [Op.notIn]: roomUserIds }  // Exclude users connected via a room
+                  ]
+              }
+          },
+          order: [['id', 'DESC']], // 'DESC' for descending order
+      });
+
+      // Step 5: Fetch all liked profile IDs in one query
       const likedProfiles = await Like.findAll({
-        where: {
-          userId: userId,
-          profileId: {
-            [Op.in]: users.map(user => user.id)
-          }
-        },
-        attributes: ['profileId']
+          where: {
+              userId: userId,
+              profileId: {
+                  [Op.in]: users.map(user => user.id)
+              }
+          },
+          attributes: ['profileId']
       });
       const likedProfileIds = likedProfiles.map(profile => profile.profileId);
-  
-      // Step 5: Add `isLiked` field and sort users
-      const usersWithLikes = users.map(user => ({
-        ...user.toJSON(),
-        isLiked: likedProfileIds.includes(user.id)
+
+      // Step 6: Exclude users who have blocked the current user or who are blocked by the current user
+      const blockedByUser = await BlockedUsers.findAll({
+          where: {
+              profileId: userId
+          },
+          attributes: ['userId']
+      });
+      const blockedByUserIds = blockedByUser.map(profile => profile.userId);
+
+      const filteredUsers = users.filter(user => 
+          !blockedByUserIds.includes(user.id) // Exclude users who have blocked the current user
+      );
+
+      // Step 7: Add `isLiked` field and sort users
+      const usersWithLikes = filteredUsers.map(user => ({
+          ...user.toJSON(),
+          isLiked: likedProfileIds.includes(user.id)
       }));
-  
+
       // Sort users so that liked profiles are at the end of the list
       const sortedUsers = usersWithLikes.sort((a, b) => {
-        if (a.isLiked === b.isLiked) return 0;
-        return a.isLiked ? 1 : -1;
+          if (a.isLiked === b.isLiked) return 0;
+          return a.isLiked ? 1 : -1;
       });
-  
+
       res.status(200).json(sortedUsers);
-    } catch (error) {
+  } catch (error) {
       next(error);
-    }
-  };
+  }
+};
+
 
 
 
