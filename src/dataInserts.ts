@@ -8,6 +8,7 @@ import Like from './models/Like';
 import Visitors from './models/Visitors';
 import BlockedUsers from './models/BlockedUsers';
 import IgnoredUser from './models/IgnoredUser';
+import SidebarMenu from './models/SideMenu';
 
 // Predefined data
 const genders = [
@@ -59,7 +60,18 @@ const interests = [
   'Semi-Romantic Music', 'Semi-Romantic Poetry', 'Semi-Romantic Novels', 'Semi-Romantic Gestures',
   'Semi-Romantic Picnics', 'Semi-Romantic Cruises', 'Normal'
 ];
-
+const sidebarMenuItems = [
+  { label: 'Posts', icon: 'HomeIcon' },
+  { label: 'Profile', icon: 'PersonIcon' },
+  { label: 'Matches', icon: 'FavoriteBorderIcon' },
+  { label: 'Search', icon: 'SearchOutlinedIcon' },
+  { label: 'Visitors', icon: 'RemoveRedEyeIcon' },
+  { label: 'Likes', icon: 'FavoriteBorderIcon' },
+  { label: 'Messages', icon: 'MessageIcon' },
+  { label: 'Skipped', icon: 'ThumbDownOffAltIcon' },
+  { label: 'Blocked', icon: 'BlockOutlinedIcon' },
+  { label: 'Logout', icon: 'LoginIcon' },
+];
 const insertData = async () => {
   try {
     // Insert Genders
@@ -88,6 +100,12 @@ const insertData = async () => {
     }
     for (const intrest of interests) {
       await Interest.findOrCreate({ where: { intrest } });
+    }
+    for (const item of sidebarMenuItems) {
+      await SidebarMenu.findOrCreate({
+        where: { label: item.label },
+        defaults: { label: item.label, icon: item.icon }
+      });
     }
   } catch (error) {
     console.error('Error inserting data:', error);

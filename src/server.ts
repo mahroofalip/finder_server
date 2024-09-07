@@ -5,7 +5,7 @@ import { initSocket } from './sockets/socket';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import insertData from './dataInserts';
-import { syncEducation, syncEyeColor, syncGender, syncHairColor, syncInterest, syncMessage, syncProfession, syncRoom, syncUser, syncUsersPosts, syncVisitors, syncBlockedUsers, syncIgnoredUser, syncLike } from './models'; // Adjust import path
+import { syncEducation, syncEyeColor, syncGender, syncHairColor, syncInterest, syncMessage, syncProfession, syncRoom, syncUser, syncUsersPosts, syncVisitors, syncBlockedUsers, syncIgnoredUser, syncLike, syncSidebarMenu } from './models'; // Adjust import path
 import { removeOldVisitorRecordsJob } from './utils/AutoRemoveVisitor';
 
 // Load environment variables
@@ -28,6 +28,9 @@ initSocket(server);
 
 // Sync individual models
 async function syncModels() {
+  await syncSidebarMenu();
+  await syncUser();
+  await syncRoom();
   await syncEducation();
   await syncEyeColor();
   await syncGender();
@@ -35,8 +38,6 @@ async function syncModels() {
   await syncInterest();
   await syncMessage();
   await syncProfession();
-  await syncRoom();
-  await syncUser();
   await syncUsersPosts();
   await syncVisitors();
   await syncBlockedUsers();

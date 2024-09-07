@@ -12,6 +12,7 @@ import Visitors from "./Visitors";
 import BlockedUsers from "./BlockedUsers";
 import IgnoredUser from "./IgnoredUser";
 import Like from "./Like";
+import SidebarMenu from "./SideMenu";
 
 export async function syncEducation() {
   await Education.sync();
@@ -67,4 +68,9 @@ export async function syncIgnoredUser() {
 
 export async function syncLike() {
   await Like.sync();
+}
+
+
+export async function syncSidebarMenu() {
+  await SidebarMenu.sync();
 }

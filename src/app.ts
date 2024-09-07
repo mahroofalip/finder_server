@@ -19,7 +19,8 @@ app.use((req, res, next) => {
 });
 // Routes
 import apiRoutes from './routes';
-import authRoutes from './routes/authRoutes';
+import authRoutes from './routes/authRoutes'; 
+import menuRoutes from './routes/sideMenuRoutes';
 import messageRoutes from './routes/messageRoutes';
 import usersRoutes from './routes/usersRoutes';
 import mapRoutes from './routes/mapRoutes';
@@ -28,6 +29,7 @@ import likeRoutes from './routes/likeRoutes'
 import ignoreRoutes from './routes/ignoreRoutes'
 import visitorRoute from './routes/visitorRoutes'
 app.use('/api', apiRoutes);
+app.use('/api/sidemenu', menuRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/messages', messageRoutes);

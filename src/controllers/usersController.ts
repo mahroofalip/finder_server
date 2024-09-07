@@ -242,7 +242,8 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
                 place: placeDis,
                 birthDate: dob,
                 interests: interestsString,
-                lookingFor:lookingForString
+                lookingFor:lookingForString,
+                isProfileCompleted:true
             },
             {
                 where: { id: userId },

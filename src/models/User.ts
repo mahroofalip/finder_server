@@ -1,6 +1,7 @@
 import { DataTypes, Model, Optional } from 'sequelize';
 import sequelize from '../config/database';
 import bcrypt from 'bcryptjs';
+
 interface UserAttributes {
   id: number;
   email: string;
@@ -8,13 +9,13 @@ interface UserAttributes {
   phone: string;
   firstName: string;
   lastName: string;
-  place:string| null;
-  displayName:string| null;
-  profession :string| null;
-  eyeColor:string| null;
-  hairColor:string| null;
-  education:string| null;
-  gender:string| null;
+  place: string | null;
+  displayName: string | null;
+  profession: string | null;
+  eyeColor: string | null;
+  hairColor: string | null;
+  education: string | null;
+  gender: string | null;
   maritalStatus: string | null;
   description: string | null;
   isOnline: boolean;
@@ -27,8 +28,11 @@ interface UserAttributes {
   weight: string | null;
   interests: string | null;
   lookingFor: string | null;
+  isProfileCompleted: boolean; // Added field
 }
+
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> { }
+
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
   public id!: number;
   public email!: string;
@@ -42,9 +46,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public education!: string;
   public gender!: string;
   public displayName!: string;
-  
   public description!: string;
-
   public place!: string;
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -59,7 +61,7 @@ class User extends Model<UserAttributes, UserCreationAttributes> implements User
   public birthDate!: string | null;
   public height!: string | null;
   public weight!: string | null;
-  
+  public isProfileCompleted!: boolean; // Added field
 
   public async comparePassword(candidatePassword: string): Promise<boolean> {
     return bcrypt.compare(candidatePassword, this.password);
@@ -90,7 +92,6 @@ User.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -99,7 +100,6 @@ User.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    
     profession: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -132,7 +132,6 @@ User.init(
       type: DataTypes.STRING,
       allowNull: true,
     },
-    // 
     displayName: {
       type: DataTypes.STRING,
       allowNull: true,
@@ -140,7 +139,7 @@ User.init(
     maritalStatus: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: null
+      defaultValue: null,
     },
     lastActiveAt: {
       type: DataTypes.DATE,
@@ -155,40 +154,43 @@ User.init(
     profileImage: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: null
+      defaultValue: null,
     },
     profileImageKey: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: null
+      defaultValue: null,
     },
-    
     userName: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: null
+      defaultValue: null,
     },
     birthDate: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: null
+      defaultValue: null,
     },
-    
     height: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: null
+      defaultValue: null,
     },
     weight: {
       type: DataTypes.STRING,
       allowNull: true,
-      defaultValue: null
+      defaultValue: null,
     },
-    
+    isProfileCompleted: { // Added field
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
   },
   {
     sequelize,
     tableName: 'FINDER_USERS',
   }
 );
+
 export default User;

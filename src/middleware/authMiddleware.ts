@@ -8,10 +8,13 @@ interface AuthenticatedRequest extends Request {
 
 const authMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
+      
     const authHeader = req.headers.authorization;
+
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
       throw new AppError('You are not logged in! Please log in to get access.', 401);
     }
+
     const token = authHeader.split(' ')[1];
     const decoded = verifyToken(token) as { id: number };
     req.user = decoded; 

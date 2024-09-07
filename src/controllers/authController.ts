@@ -32,6 +32,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
         firstName,
         lastName,
         isOnline: false,
+        isProfileCompleted:false,
         profileImage: getRandomImageUrl(),
         userName: uniqueUsername, // Use the generated unique username
         birthDate: null,
