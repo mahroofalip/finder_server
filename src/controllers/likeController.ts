@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import Like from '../models/Like';
 import User from '../models/User';
+import BlockedUsers from '../models/BlockedUsers';
 interface AuthenticatedRequest extends Request {
     user?: { id: number };
 }
@@ -34,16 +35,26 @@ export const getLikesForUser = async (req: AuthenticatedRequest, res: Response, 
     const userId = req?.user?.id;
 
     try {
-        // Step 1: Fetch all likes where the current user's profileId is liked by others
+        // Step 1: Fetch all blocked profile IDs
+        const blockedProfiles = await BlockedUsers.findAll({
+            where: {
+                userId: userId, // Only profiles that this user has blocked
+            },
+            attributes: ['profileId']
+        });
+        const blockedProfileIds = blockedProfiles.map(profile => profile.profileId);
+
+        // Step 2: Fetch all likes where the current user's profileId is liked by others
         const likes = await Like.findAll({
             where: { profileId: userId },
             include: [{ model: User, as: 'user' }] // Include the user who liked the current user's profile
         });
 
-        // Step 2: Extract the liked users and check if the current user liked them back
+        // Step 3: Extract the liked users and check if the current user liked them back
         const likedUsersWithIsLiked = await Promise.all(likes.map(async (like) => {
-            if (!like.user) {
-                // If like.user is undefined, skip this iteration
+            const user = like.user;
+            if (!user || blockedProfileIds.includes(user.id)) {
+                // Skip if the user is blocked or undefined
                 return null;
             }
 
@@ -51,17 +62,17 @@ export const getLikesForUser = async (req: AuthenticatedRequest, res: Response, 
             const isLiked = await Like.findOne({
                 where: {
                     userId: userId,
-                    profileId: like.user.id
+                    profileId: user.id
                 }
             });
 
             return {
-                ...like.user.toJSON(),
+                ...user.toJSON(),
                 isLiked: !!isLiked // `isLiked` will be true if the current user liked this user back, otherwise false
             };
         }));
 
-        // Filter out any null values (cases where like.user was undefined)
+        // Step 4: Filter out any null values (cases where like.user was undefined or blocked)
         const filteredLikedUsers = likedUsersWithIsLiked.filter(user => user !== null);
 
         res.status(200).json(filteredLikedUsers);
@@ -70,3 +81,4 @@ export const getLikesForUser = async (req: AuthenticatedRequest, res: Response, 
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
+

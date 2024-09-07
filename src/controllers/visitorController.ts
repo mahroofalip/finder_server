@@ -4,6 +4,7 @@ import User from '../models/User';
 import Like from '../models/Like';
 import { Op } from 'sequelize';
 import { LikeAttributes } from '../types/like';
+import BlockedUsers from '../models/BlockedUsers';
 
 interface AuthenticatedRequest extends Request {
     user?: { id: number };
@@ -41,16 +42,27 @@ export const getVisitorsForUser = async (req: AuthenticatedRequest, res: Respons
     const userId = req?.user?.id;
 
     try {
-        // Fetch all visits where the current user is the profile owner
+        // Step 1: Fetch all blocked profile IDs
+        const blockedProfiles = await BlockedUsers.findAll({
+            where: {
+                userId: userId, // Only profiles that this user has blocked
+            },
+            attributes: ['profileId']
+        });
+        const blockedProfileIds = blockedProfiles.map(profile => profile.profileId);
+
+        // Step 2: Fetch all visits where the current user is the profile owner
         const visits = await Visitors.findAll({
             where: { profileId: userId },
             include: [{ model: User, as: 'user' }]
         });
 
-        // Extract IDs of the profiles that have visited the user
-        const visitedProfileIds = visits.map(visit => visit.user?.id).filter((id): id is number => id !== undefined);
+        // Extract IDs of the profiles that have visited the user and filter out blocked profiles
+        const visitedProfileIds = visits
+            .map(visit => visit.user?.id)
+            .filter((id): id is number => id !== undefined && !blockedProfileIds.includes(id)); // Exclude blocked users
 
-        // Fetch the liked profiles of the current user
+        // Step 3: Fetch the liked profiles of the current user
         const likedProfiles = await Like.findAll({
             where: {
                 userId: userId,
@@ -64,10 +76,10 @@ export const getVisitorsForUser = async (req: AuthenticatedRequest, res: Respons
         // Explicitly type the parameter in the map function
         const likedProfileIds = likedProfiles.map((profile: LikeAttributes) => profile.profileId);
 
-        // Add `isVisited` and `isLiked` fields to each visiting user
+        // Step 4: Add `isVisited` and `isLiked` fields to each visiting user
         const visitingUsersWithStatus = await Promise.all(visits.map(async (visit) => {
             const user = visit.user;
-            if (!user) {
+            if (!user || blockedProfileIds.includes(user.id)) { // Exclude blocked users
                 return null;
             }
 
