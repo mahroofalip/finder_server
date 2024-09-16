@@ -196,7 +196,7 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
 
         // Check if the profileImage is an S3 URL
         const isS3Url = (str: string) => {
-            return str.startsWith("https://finders3bucket.s3.ap-south-1.amazonaws.com");
+            return str.startsWith("finder_img_");
         };
 
         if (profileImage && isBase64(profileImage)) {

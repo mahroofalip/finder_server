@@ -12,6 +12,7 @@ export const getAllSidebarMenuItems = async (req: AuthenticatedRequest, res: Res
         }
 
         const menuItems = await SidebarMenu.findAll({
+            where: { isEnabled: true },  // Only return items where isEnabled is true
             order: [['id', 'ASC']], // Optional: Order by ID or any other field
         });
 
