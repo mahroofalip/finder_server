@@ -36,7 +36,7 @@ IgnoredUser.init(
     },
     {
         sequelize,
-        tableName: 'SOUL_SPARK_IGNOREDUSERS',
+        tableName: `${process.env.START_APP_NAME}IGNOREDUSERS`,
         timestamps: true,
     }
 );

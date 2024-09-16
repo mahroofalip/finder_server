@@ -29,7 +29,7 @@ Gender.init(
   },
   {
     sequelize,
-    tableName: 'SOUL_SPARK_GENDERS',
+    tableName: `${process.env.START_APP_NAME}GENDERS`,
     timestamps: true,
   }
 );

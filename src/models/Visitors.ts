@@ -38,7 +38,7 @@ Visitors.init(
     },
     {
         sequelize,
-        tableName: 'SOUL_SPARK_VISITORS',
+        tableName: `${process.env.START_APP_NAME}VISITORS`,
         timestamps: true,
     }
 );

@@ -29,7 +29,7 @@ HairColor.init(
   },
   {
     sequelize,
-    tableName: 'SOUL_SPARK_HAIRCOLORS',
+    tableName: `${process.env.START_APP_NAME}HAIRCOLORS`,
     timestamps: true,
   }
 );

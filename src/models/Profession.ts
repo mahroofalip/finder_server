@@ -25,7 +25,7 @@ Profession.init(
   },
   {
     sequelize,
-    tableName: 'SOUL_SPARK_PROFESSIONS',
+    tableName: `${process.env.START_APP_NAME}PROFESSIONS`,
     timestamps: true,
   }
 );

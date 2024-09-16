@@ -39,7 +39,7 @@ BlockedUsers.init(
     },
     { 
         sequelize, 
-        tableName: 'SOUL_SPARK_BLOCKEDUSERS',
+        tableName: `${process.env.START_APP_NAME}BLOCKEDUSERS`,
         timestamps: true,
     }
 );

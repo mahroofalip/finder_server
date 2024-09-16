@@ -189,7 +189,7 @@ User.init(
   },
   {
     sequelize,
-    tableName: 'SOUL_SPARK_USERS',
+    tableName: `${process.env.START_APP_NAME}USERS`,
   }
 );
 

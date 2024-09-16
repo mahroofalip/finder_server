@@ -29,7 +29,7 @@ EyeColor.init(
   },
   {
     sequelize,
-    tableName: 'SOUL_SPARK_EYECOLORS',
+    tableName: `${process.env.START_APP_NAME}EYECOLORS`,
     timestamps: true,
   }
 );

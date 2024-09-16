@@ -25,7 +25,7 @@ Interest.init(
   },
   {
     sequelize,
-    tableName: 'SOUL_SPARK_INTERESTS',
+    tableName: `${process.env.START_APP_NAME}INTERESTS`,
     timestamps: true,
   }
 );

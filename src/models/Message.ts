@@ -51,7 +51,7 @@ Message.init(
     },
     {
         sequelize,
-        tableName: 'SOUL_SPARK_MESSAGES',
+        tableName: `${process.env.START_APP_NAME}MESSAGES`,
     }
 );
 Message.belongsTo(Room, { foreignKey: 'room_id' }); // Define the relationship

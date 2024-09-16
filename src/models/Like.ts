@@ -34,7 +34,7 @@ Like.init(
     },
     {
         sequelize,
-        tableName: 'SOUL_SPARK_LIKES',
+        tableName: `${process.env.START_APP_NAME}LIKES`,
         timestamps: true,
     }
 );

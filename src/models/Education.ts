@@ -29,7 +29,7 @@ Education.init(
   },
   {
     sequelize,
-    tableName: 'SOUL_SPARK_EDUCATIONS',
+    tableName: `${process.env.START_APP_NAME}EDUCATIONS`,
     timestamps: true,
   }
 );

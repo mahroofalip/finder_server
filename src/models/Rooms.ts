@@ -42,7 +42,7 @@ Room.init(
     },
     {
         sequelize,
-        tableName: 'SOUL_SPARK_ROOMS',
+        tableName: `${process.env.START_APP_NAME}ROOMS`,
     }
 );
 

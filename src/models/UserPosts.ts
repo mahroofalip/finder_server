@@ -48,7 +48,7 @@ UsersPosts.init(
     },
     {
         sequelize,
-        tableName: 'SOUL_SPARK_USERPOSTS',
+        tableName: `${process.env.START_APP_NAME}USERPOSTS`,
         timestamps: true,
     }
 );

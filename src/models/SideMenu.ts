@@ -43,7 +43,7 @@ SidebarMenu.init(
   },
   {
     sequelize,
-    tableName: 'SOUL_SPARK_SIDEBARMENUS',
+    tableName: `${process.env.START_APP_NAME}SIDEBARMENUS`,
     timestamps: true,
   }
 );
