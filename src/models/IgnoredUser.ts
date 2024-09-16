@@ -36,7 +36,7 @@ IgnoredUser.init(
     },
     {
         sequelize,
-        tableName: 'FINDER_IGNOREDUSERS',
+        tableName: 'SOUL_SPARK_IGNOREDUSERS',
         timestamps: true,
     }
 );

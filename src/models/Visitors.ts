@@ -38,7 +38,7 @@ Visitors.init(
     },
     {
         sequelize,
-        tableName: 'FINDER_VISITORS',
+        tableName: 'SOUL_SPARK_VISITORS',
         timestamps: true,
     }
 );

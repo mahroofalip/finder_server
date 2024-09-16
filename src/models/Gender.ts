@@ -29,7 +29,7 @@ Gender.init(
   },
   {
     sequelize,
-    tableName: 'FINDER_GENDERS',
+    tableName: 'SOUL_SPARK_GENDERS',
     timestamps: true,
   }
 );

@@ -29,7 +29,7 @@ EyeColor.init(
   },
   {
     sequelize,
-    tableName: 'FINDER_EYECOLORS',
+    tableName: 'SOUL_SPARK_EYECOLORS',
     timestamps: true,
   }
 );

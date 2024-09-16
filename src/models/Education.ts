@@ -29,7 +29,7 @@ Education.init(
   },
   {
     sequelize,
-    tableName: 'FINDER_EDUCATIONS',
+    tableName: 'SOUL_SPARK_EDUCATIONS',
     timestamps: true,
   }
 );

@@ -25,7 +25,7 @@ Profession.init(
   },
   {
     sequelize,
-    tableName: 'FINDER_PROFESSIONS',
+    tableName: 'SOUL_SPARK_PROFESSIONS',
     timestamps: true,
   }
 );

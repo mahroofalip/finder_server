@@ -189,7 +189,7 @@ User.init(
   },
   {
     sequelize,
-    tableName: 'FINDER_USERS',
+    tableName: 'SOUL_SPARK_USERS',
   }
 );
 

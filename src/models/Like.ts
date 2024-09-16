@@ -34,7 +34,7 @@ Like.init(
     },
     {
         sequelize,
-        tableName: 'FINDER_LIKES',
+        tableName: 'SOUL_SPARK_LIKES',
         timestamps: true,
     }
 );

@@ -51,7 +51,7 @@ Message.init(
     },
     {
         sequelize,
-        tableName: 'FINDER_MESSAGES',
+        tableName: 'SOUL_SPARK_MESSAGES',
     }
 );
 Message.belongsTo(Room, { foreignKey: 'room_id' }); // Define the relationship

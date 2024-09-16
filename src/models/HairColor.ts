@@ -29,7 +29,7 @@ HairColor.init(
   },
   {
     sequelize,
-    tableName: 'FINDER_HAIRCOLORS',
+    tableName: 'SOUL_SPARK_HAIRCOLORS',
     timestamps: true,
   }
 );

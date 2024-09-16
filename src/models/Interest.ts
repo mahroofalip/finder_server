@@ -25,7 +25,7 @@ Interest.init(
   },
   {
     sequelize,
-    tableName: 'FINDER_INTERESTS',
+    tableName: 'SOUL_SPARK_INTERESTS',
     timestamps: true,
   }
 );

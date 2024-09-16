@@ -42,7 +42,7 @@ Room.init(
     },
     {
         sequelize,
-        tableName: 'FINDER_ROOMS',
+        tableName: 'SOUL_SPARK_ROOMS',
     }
 );
 

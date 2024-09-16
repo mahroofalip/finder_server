@@ -37,9 +37,9 @@ BlockedUsers.init(
             allowNull: false,
         },
     },
-    {
-        sequelize,
-        tableName: 'FINDER_BLOCKEDUSERS',
+    { 
+        sequelize, 
+        tableName: 'SOUL_SPARK_BLOCKEDUSERS',
         timestamps: true,
     }
 );

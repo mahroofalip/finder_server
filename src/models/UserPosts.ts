@@ -48,7 +48,7 @@ UsersPosts.init(
     },
     {
         sequelize,
-        tableName: 'FINDER_USERPOSTS',
+        tableName: 'SOUL_SPARK_USERPOSTS',
         timestamps: true,
     }
 );

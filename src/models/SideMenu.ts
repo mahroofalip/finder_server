@@ -43,7 +43,7 @@ SidebarMenu.init(
   },
   {
     sequelize,
-    tableName: 'FINDER_SIDEBARMENUS',
+    tableName: 'SOUL_SPARK_SIDEBARMENUS',
     timestamps: true,
   }
 );
