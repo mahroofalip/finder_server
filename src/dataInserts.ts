@@ -61,16 +61,16 @@ const interests = [
   'Semi-Romantic Picnics', 'Semi-Romantic Cruises', 'Normal'
 ];
 const sidebarMenuItems = [
-  { label: 'Posts', icon: 'HomeIcon' },
-  { label: 'Profile', icon: 'PersonIcon' },
-  { label: 'Matches', icon: 'FavoriteBorderIcon' },
-  { label: 'Search', icon: 'SearchOutlinedIcon' },
-  { label: 'Visitors', icon: 'RemoveRedEyeIcon' },
-  { label: 'Likes', icon: 'FavoriteBorderIcon' },
-  { label: 'Messages', icon: 'MessageIcon' },
-  { label: 'Skipped', icon: 'ThumbDownOffAltIcon' },
-  { label: 'Blocked', icon: 'BlockOutlinedIcon' },
-  { label: 'Logout', icon: 'LoginIcon' },
+  { label: 'Posts', icon: 'HomeIcon', isEnabled: false },
+  { label: 'Profile', icon: 'PersonIcon', isEnabled: true },
+  { label: 'Matches', icon: 'FavoriteBorderIcon', isEnabled: true },
+  { label: 'Search', icon: 'SearchOutlinedIcon', isEnabled: false },
+  { label: 'Visitors', icon: 'RemoveRedEyeIcon', isEnabled: true },
+  { label: 'Likes', icon: 'FavoriteBorderIcon', isEnabled: true },
+  { label: 'Messages', icon: 'MessageIcon', isEnabled: true },
+  { label: 'Skipped', icon: 'ThumbDownOffAltIcon', isEnabled: true },
+  { label: 'Blocked', icon: 'BlockOutlinedIcon', isEnabled: true },
+  { label: 'Logout', icon: 'LoginIcon', isEnabled: true },
 ];
 const insertData = async () => {
   try {
@@ -104,7 +104,7 @@ const insertData = async () => {
     for (const item of sidebarMenuItems) {
       await SidebarMenu.findOrCreate({
         where: { label: item.label },
-        defaults: { label: item.label, icon: item.icon }
+        defaults: { label: item.label, icon: item.icon, isEnabled: item.isEnabled }
       });
     }
   } catch (error) {
