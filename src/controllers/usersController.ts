@@ -12,7 +12,7 @@ interface AuthenticatedRequest extends Request {
   user?: { id: number };
 }
 
-export const getFlirtMateUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const getKizzoraUsers = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
       if (!req.user) {
           throw new Error('User not authenticated');
@@ -196,7 +196,7 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
 
         // Check if the profileImage is an S3 URL
         const isS3Url = (str: string) => {
-            return str.startsWith("flirt_mate_user_img_");
+            return str.startsWith(`${process.env.START_PIC_NAME}`);
         };
 
         if (profileImage && isBase64(profileImage)) {
@@ -262,7 +262,7 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
         });
 
     } catch (error) {
-        next(error);
+        next(error);    
     }
 };
 

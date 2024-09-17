@@ -7,6 +7,7 @@ import cors from 'cors';
 import insertData from './dataInserts';
 import { syncEducation, syncEyeColor, syncGender, syncHairColor, syncInterest, syncMessage, syncProfession, syncRoom, syncUser, syncUsersPosts, syncVisitors, syncBlockedUsers, syncIgnoredUser, syncLike, syncSidebarMenu } from './models'; // Adjust import path
 import { removeOldVisitorRecordsJob } from './utils/AutoRemoveVisitor';
+import express from 'express';
 
 // Load environment variables
 dotenv.config();
@@ -15,6 +16,7 @@ const PORT = process.env.PORT || 3000;
 const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:3000';
 
 // Set up CORS
+
 app.use(cors({
   origin: CORS_ORIGIN,
   credentials: true,
@@ -74,3 +76,4 @@ process.on('SIGTERM', () => {
     });
   });
 });
+
