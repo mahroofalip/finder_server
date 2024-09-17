@@ -18,6 +18,7 @@ app.use((req, res, next) => {
   next();
 });
 // Routes
+
 import apiRoutes from './routes';
 import authRoutes from './routes/authRoutes'; 
 import menuRoutes from './routes/sideMenuRoutes';
@@ -39,7 +40,7 @@ app.use('/api/like', likeRoutes);
 app.use('/api/ignore', ignoreRoutes); 
 app.use('/api/visitor', visitorRoute); 
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/index.html'));
+  res.json({status:"Working..."})
 });
 app.all('*', (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl} on this server!`, 404));
