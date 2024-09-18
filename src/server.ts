@@ -13,7 +13,7 @@ import express from 'express';
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
-const CORS_ORIGIN = process.env.CORS_ORIGIN || 'https://66e9d3d935bcb964ca8d01eb--tranquil-frangollo-a66f96.netlify.app';
+const CORS_ORIGIN = 'https://66e9db7fdf191b7264c179a8--merry-trifle-0ca36f.netlify.app';
 
 // Set up CORS
 
