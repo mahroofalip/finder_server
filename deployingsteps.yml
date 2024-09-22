@@ -1,46 +1,50 @@
-pwd
+# pwd
 
-git => settings > actions > runners > new self-hosted runner => linux = > 
-follow commants
+# git => settings > actions > runners > new self-hosted runner => linux = > 
+# follow commants
 
-# Create a folder
+# # Create a folder
 
-1. mkdir actions-runner-backend-server && cd actions-runner-backend-server  # => (In a small way, i have changed name apart of git instruction)
-# Download the latest runner package
-2. curl -o actions-runner-linux-x64-2.319.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.319.1/actions-runner-linux-x64-2.319.1.tar.gz
-# Optional: Validate the hash
-3. echo "3f6efb7488a183e291fc2c62876e14c9ee732864173734facc85a1bfb1744464  actions-runner-linux-x64-2.319.1.tar.gz" | shasum -a 256 -c
-# Extract the installer
-4. tar xzf ./actions-runner-linux-x64-2.319.1.tar.gz
+# 1. mkdir actions-runner-backend-server && cd actions-runner-backend-server  # => (In a small way, i have changed name apart of git instruction)
+# # Download the latest runner package
+# 2. curl -o actions-runner-linux-x64-2.319.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.319.1/actions-runner-linux-x64-2.319.1.tar.gz
+# # Optional: Validate the hash
+# 3. echo "3f6efb7488a183e291fc2c62876e14c9ee732864173734facc85a1bfb1744464  actions-runner-linux-x64-2.319.1.tar.gz" | shasum -a 256 -c
+# # Extract the installer
+# 4. tar xzf ./actions-runner-linux-x64-2.319.1.tar.gz
 
-# Create the runner and start the configuration experience
-5. ./config.sh --url https://github.com/mahroofalip/finder_server --token AX2PNMDHRAGWB5JZIYI2SULG54OAY
-Copied!# Last step, run it! # enter default options 
+# # Create the runner and start the configuration experience
+# 5. ./config.sh --url https://github.com/mahroofalip/finder_server --token AX2PNMDHRAGWB5JZIYI2SULG54OAY
+# Copied!# Last step, run it! # enter default options 
 
-ls # for show folders files
-6. sudo ./svc.sh install
+# ls # for show folders files
+# 6. sudo ./svc.sh install
 
-7.  sudo ./svc.sh   start
-8. check runner state from git
+# 7.  sudo ./svc.sh   start
+# 8. check runner state from git
 
 
-9. github = > settings => secretes and variables => actions = > name for variable and paste all env file from project
+# 9. github = > settings => secretes and variables => actions = > name for variable and paste all env file from project
 
-10 . github => action =>  select continuous integration =>node js=>
+# 10 . github => action =>  select continuous integration =>node js=>
 
-name /CD added to CI 
-pull req removed
-runs-on :self-hosted
-reomved unvwanted node js version
-add line like below after npm ci
+# name /CD added to CI 
+# pull req removed
+# runs-on :self-hosted
+# reomved unvwanted node js version
+# add line like below after npm ci
 
-- run: | 
-        touch .env
-        echo "${{ secrets.PROD_ENV_FILE }}" > .env
+# - run: | 
+#         touch .env
+#         echo "${{ secrets.PROD_ENV_FILE }}" > .env
  
- and commit the changes
+#  and commit the changes
 
 
- after succes check instence -work and project inside that
+#  after succes check instence -work and project inside that
 
 
+
+#  => in instance 
+
+# https://github.com/kalyansaxena/nodejs-restapi-ec2
