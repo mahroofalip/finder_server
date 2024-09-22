@@ -17,8 +17,12 @@ const CORS_ORIGIN = 'https://66e9db7fdf191b7264c179a8--merry-trifle-0ca36f.netli
 
 // Set up CORS
 
+// app.use(cors({
+//   origin: CORS_ORIGIN,
+//   credentials: true,
+// }));
 app.use(cors({
-  origin: CORS_ORIGIN,
+  origin: '*',  // Allow all origins
   credentials: true,
 }));
 

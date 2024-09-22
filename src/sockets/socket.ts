@@ -5,7 +5,7 @@ let io: SocketIOServer;
 export const initSocket = (server: HttpServer) => {
     io = new SocketIOServer(server, {
         cors: {
-            origin: "https://66e9db7fdf191b7264c179a8--merry-trifle-0ca36f.netlify.app", // Adjust as needed for security
+            origin: "*", // Adjust as needed for security
             credentials: true,
         },
     });
