@@ -13,7 +13,7 @@ import express from 'express';
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
-const CORS_ORIGIN = 'https://datingappkizzora.netlify.app/';
+const CORS_ORIGIN = 'https://datingappkizzora.netlify.app';
 
 // Set up CORS
 
