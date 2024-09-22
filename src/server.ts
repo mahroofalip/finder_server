@@ -13,18 +13,15 @@ import express from 'express';
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
-const CORS_ORIGIN = 'https://66e9db7fdf191b7264c179a8--merry-trifle-0ca36f.netlify.app';
+const CORS_ORIGIN = 'https://datingappkizzora.netlify.app/';
 
 // Set up CORS
 
-// app.use(cors({
-//   origin: CORS_ORIGIN,
-//   credentials: true,
-// }));
 app.use(cors({
-  origin: '*',  // Allow all origins
+  origin: CORS_ORIGIN,
   credentials: true,
 }));
+
 
 // Create HTTP server
 const server = http.createServer(app);
