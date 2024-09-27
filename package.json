@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "ts-node src/server.ts",
+    "stage":"tsc && git status && git add .",
     "build": "tsc",
     "serve": "node dist/server.js",
     "dev": "nodemon src/server.ts"
