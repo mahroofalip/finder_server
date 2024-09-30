@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node src/server.js",
+    "start": "ts-node src/server.ts",
     "stage":"tsc && git status && git add .",
     "build": "tsc",
     "serve": "node dist/server.js",
