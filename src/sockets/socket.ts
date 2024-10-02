@@ -10,7 +10,7 @@ let io: SocketIOServer;
 export const initSocket = (server: HttpServer) => {
     io = new SocketIOServer(server, {
         cors: {
-            origin: "*", // Allow any origin
+            origin: "https://datingkizzora.netlify.app", // Allow any origin
             credentials: true, // If you're using credentials such as cookies
         },
     });
