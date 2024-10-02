@@ -95,7 +95,7 @@ sudo nano default
 
 location /api {
     rewrite ^\/api\/(.*)$ /api/$1 break;
-    proxy_pass http://localhost:8000;
+    proxy_pass http://localhost:5000;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
@@ -107,9 +107,9 @@ if paste ip (public of instance ) u can see nginx
  change path to server
  pm2 start server.js --name = nameOfServer
 
- and test 
+ and test
 
  add 1 more cammant into yml last
  - run :pm2 restart nameOfServer 
- 
+
  commmit changes
