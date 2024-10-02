@@ -271,7 +271,7 @@ export const updateUserProfile = async (req: AuthenticatedRequest, res: Response
 
 export const UpdateActiveInactive = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
     try {
-        updateUserActivity(req.user?.id, true);
+        await updateUserActivity(req.user?.id, true);
         res.status(200).json({ message: 'User activity updated successfully' });
     } catch (error) {
         res.status(500).json({ message: 'Failed to update user activity' });

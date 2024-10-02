@@ -18,6 +18,8 @@ import express from 'express';
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
+app.use(express.json({ limit: '50mb',  }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 // Set up global CORS (allow all origins)
 app.use(cors({
