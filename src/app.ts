@@ -6,19 +6,17 @@ import path from 'path';
 import AppError from './utils/AppError';
 import errorHandler from './middleware/errorHandler';
 dotenv.config();
+
 const app = express();
+
+// Middleware setup
 app.use(morgan('dev'));
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '500mb' })); // Set limit here
+app.use(express.urlencoded({ limit: '500mb', extended: true })); // Set limit here
 app.use(express.static(path.join(__dirname, '../public')));
-app.use(express.json({ limit: '500mb',  }));
-app.use(express.urlencoded({ limit: '500mb', extended: true }));
-app.use((req, res, next) => {
-  next();
-});
-// Routes
 
+// Routes
 import apiRoutes from './routes';
 import authRoutes from './routes/authRoutes'; 
 import menuRoutes from './routes/sideMenuRoutes';
@@ -26,9 +24,9 @@ import messageRoutes from './routes/messageRoutes';
 import usersRoutes from './routes/usersRoutes';
 import mapRoutes from './routes/mapRoutes';
 import commonRoutes from './routes/commonRoutes';
-import likeRoutes from './routes/likeRoutes'
-import ignoreRoutes from './routes/ignoreRoutes'
-import visitorRoute from './routes/visitorRoutes'
+import likeRoutes from './routes/likeRoutes';
+import ignoreRoutes from './routes/ignoreRoutes';
+import visitorRoute from './routes/visitorRoutes';
 
 app.get('/', (req, res) => {
   res.send('App server is working ...');
@@ -44,11 +42,10 @@ app.use('/api/common', commonRoutes);
 app.use('/api/like', likeRoutes); 
 app.use('/api/ignore', ignoreRoutes); 
 app.use('/api/visitor', visitorRoute); 
-app.get('/', (req, res) => {
-  res.json({status:"Working..."})
-});
+
 app.all('*', (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl} on this server!`, 404));
 });
 app.use(errorHandler);
+
 export default app;

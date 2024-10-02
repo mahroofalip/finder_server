@@ -218,7 +218,7 @@ const updateUserProfile = async (req, res, next) => {
 exports.updateUserProfile = updateUserProfile;
 const UpdateActiveInactive = async (req, res, next) => {
     try {
-        (0, AutoInactive_1.updateUserActivity)(req.user?.id, true);
+        await (0, AutoInactive_1.updateUserActivity)(req.user?.id, true);
         res.status(200).json({ message: 'User activity updated successfully' });
     }
     catch (error) {

@@ -12,16 +12,12 @@ const AppError_1 = __importDefault(require("./utils/AppError"));
 const errorHandler_1 = __importDefault(require("./middleware/errorHandler"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
+// Middleware setup
 app.use((0, morgan_1.default)('dev'));
 app.use((0, cors_1.default)());
-app.use(express_1.default.json());
-app.use(express_1.default.urlencoded({ extended: true }));
+app.use(express_1.default.json({ limit: '500mb' })); // Set limit here
+app.use(express_1.default.urlencoded({ limit: '500mb', extended: true })); // Set limit here
 app.use(express_1.default.static(path_1.default.join(__dirname, '../public')));
-app.use(express_1.default.json({ limit: '500mb', }));
-app.use(express_1.default.urlencoded({ limit: '500mb', extended: true }));
-app.use((req, res, next) => {
-    next();
-});
 // Routes
 const routes_1 = __importDefault(require("./routes"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
@@ -46,9 +42,6 @@ app.use('/api/common', commonRoutes_1.default);
 app.use('/api/like', likeRoutes_1.default);
 app.use('/api/ignore', ignoreRoutes_1.default);
 app.use('/api/visitor', visitorRoutes_1.default);
-app.get('/', (req, res) => {
-    res.json({ status: "Working..." });
-});
 app.all('*', (req, res, next) => {
     next(new AppError_1.default(`Cannot find ${req.originalUrl} on this server!`, 404));
 });
