@@ -27,7 +27,7 @@ jobs:
         touch .env
         echo "${{secrets.PROD_ENV_FILE}}" > .env
 
-    - run: pm2 restart dist/server.js
+    - run: pm2 restart server
     
     # Uncomment if you need to run the build step
     # - run: |
