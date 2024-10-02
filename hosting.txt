@@ -1,0 +1,115 @@
+// create instance with ubuntu
+// connect using ssh from connect option aws with pem key
+//  inside 
+
+git setup 
+//settings => actions = > runners
+
+
+// new self =>  select linux => 
+
+paste commands in instance
+// mkdir actions-runner && cd actions-runner  : if needed rename to differentiate for frontend:
+// mkdir actions-runner-backend && cd actions-runner-backend
+
+// curl -o actions-runner-linux-x64-2.319.1.tar.gz -L https://github.com/actions/runner/releases/download/v2.319.1/actions-runner-linux-x64-2.319.1.tar.gz
+
+// echo "3f6efb7488a183e291fc2c62876e14c9ee732864173734facc85a1bfb1744464  actions-runner-linux-x64-2.319.1.tar.gz" | shasum -a 256 -c
+
+//tar xzf ./actions-runner-linux-x64-2.319.1.tar.gz
+
+
+//./config.sh --url https://github.com/mahroofalip/finder_server --token AX2PNMGKWIIZ5FRT7MYHAELG7UJDQ
+
+
+// press all enter to take default options
+
+in get go back to runners check ip with offline
+
+type in inside action folder like 
+sudo ./svc.sh install
+and 
+sudo ./svc.sh start
+
+
+set up environment variables
+
+settings = > secret and variables => actions 
+
+add name like PROD_ENV_FILE
+and copy paste all in this and click add
+
+
+goto action tab 
+select node js
+edit yml file
+
+
+change Node js CI to Node js CI/CD
+
+remove pull request 
+
+ubuntu-latest change to  self-hosted
+
+version to latest dont pick all version from array which u see
+
+
+
+- run :npm CI
+- run : | touch .env 
+echo "${{secrets.PROD_ENV_FILE}}" > . env
+
+
+.................
+npm run build 
+npm run serve
+
+both for special for my environment
+......................
+
+and commit the changes
+
+
+
+cd action-folder
+cd _work
+cd mygitserver/mygitserver
+
+ls
+ls -a
+
+
+install dependencies in same dir
+sudo apt update
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+node -v
+sudo apt-get install -y nginx
+
+sudo npm i -g pm2
+pm2
+
+
+cd /etc/nginx/sites-available
+sudo nano default
+
+location /api {
+    rewrite ^\/api\/(.*)$ /api/$1 break;
+    proxy_pass http://localhost:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+}
+
+if paste ip (public of instance ) u can see nginx
+
+ start server
+ change path to server
+ pm2 start server.js --name = nameOfServer
+
+ and test 
+
+ add 1 more cammant into yml last
+ - run :pm2 restart nameOfServer 
+ 
+ commmit changes

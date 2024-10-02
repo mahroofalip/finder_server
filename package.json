@@ -8,7 +8,7 @@
     "stage":"tsc && git status && git add .",
     "build": "tsc",
     "serve": "node dist/server.js",
-    "dev": "nodemon src/server.ts"
+    "watch": "nodemon src/server.ts"
   },
   "keywords": [],
   "author": "",

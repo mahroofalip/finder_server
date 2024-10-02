@@ -29,6 +29,11 @@ import commonRoutes from './routes/commonRoutes';
 import likeRoutes from './routes/likeRoutes'
 import ignoreRoutes from './routes/ignoreRoutes'
 import visitorRoute from './routes/visitorRoutes'
+
+app.get('/', (req, res) => {
+  res.send('App server is working ...');
+});
+
 app.use('/api', apiRoutes);
 app.use('/api/sidemenu', menuRoutes);
 app.use('/api/auth', authRoutes);

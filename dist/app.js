@@ -33,6 +33,9 @@ const commonRoutes_1 = __importDefault(require("./routes/commonRoutes"));
 const likeRoutes_1 = __importDefault(require("./routes/likeRoutes"));
 const ignoreRoutes_1 = __importDefault(require("./routes/ignoreRoutes"));
 const visitorRoutes_1 = __importDefault(require("./routes/visitorRoutes"));
+app.get('/', (req, res) => {
+    res.send('App server is working ...');
+});
 app.use('/api', routes_1.default);
 app.use('/api/sidemenu', sideMenuRoutes_1.default);
 app.use('/api/auth', authRoutes_1.default);
