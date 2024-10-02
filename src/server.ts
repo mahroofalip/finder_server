@@ -5,7 +5,12 @@ import { initSocket } from './sockets/socket';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import insertData from './dataInserts';
-import { syncEducation, syncEyeColor, syncGender, syncHairColor, syncInterest, syncMessage, syncProfession, syncRoom, syncUser, syncUsersPosts, syncVisitors, syncBlockedUsers, syncIgnoredUser, syncLike, syncSidebarMenu } from './models'; // Adjust import path
+import { 
+  syncEducation, syncEyeColor, syncGender, syncHairColor, 
+  syncInterest, syncMessage, syncProfession, syncRoom, 
+  syncUser, syncUsersPosts, syncVisitors, syncBlockedUsers, 
+  syncIgnoredUser, syncLike, syncSidebarMenu 
+} from './models'; // Adjust import path
 import { removeOldVisitorRecordsJob } from './utils/AutoRemoveVisitor';
 import express from 'express';
 
@@ -13,15 +18,14 @@ import express from 'express';
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
-const CORS_ORIGIN = 'https://datingappkizzora.netlify.app';
 
-// Set up CORS
-
+// Set up global CORS (allow all origins)
 app.use(cors({
-  origin: CORS_ORIGIN,
-  credentials: true,
+  origin: "*", // This allows requests from any origin
+  credentials: true, // Allow credentials if needed
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
 }));
-
 
 // Create HTTP server
 const server = http.createServer(app);
@@ -59,8 +63,7 @@ syncModels()
     server.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
       removeOldVisitorRecordsJob.start();
-      console.log(`Crown Job started Successfllly`);
-
+      console.log('Crown Job started Successfully');
     });
   })
   .catch((err) => {
@@ -77,4 +80,3 @@ process.on('SIGTERM', () => {
     });
   });
 });
-
