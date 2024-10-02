@@ -12,7 +12,7 @@ let io;
 const initSocket = (server) => {
     io = new socket_io_1.Server(server, {
         cors: {
-            origin: "*", // Allow any origin
+            origin: "https://datingkizzora.netlify.app", // Allow any origin
             credentials: true, // If you're using credentials such as cookies
         },
     });
