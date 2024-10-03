@@ -18,7 +18,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 // Routes
 import apiRoutes from './routes';
-import authRoutes from './routes/authRoutes'; 
+import authRoutes from './routes/authRoutes';
 import menuRoutes from './routes/sideMenuRoutes';
 import messageRoutes from './routes/messageRoutes';
 import usersRoutes from './routes/usersRoutes';
@@ -37,11 +37,11 @@ app.use('/api/sidemenu', menuRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/messages', messageRoutes);
-app.use('/api/map', mapRoutes); 
-app.use('/api/common', commonRoutes); 
-app.use('/api/like', likeRoutes); 
-app.use('/api/ignore', ignoreRoutes); 
-app.use('/api/visitor', visitorRoute); 
+app.use('/api/map', mapRoutes);
+app.use('/api/common', commonRoutes);
+app.use('/api/like', likeRoutes);
+app.use('/api/ignore', ignoreRoutes);
+app.use('/api/visitor', visitorRoute);
 
 app.all('*', (req, res, next) => {
   next(new AppError(`Cannot find ${req.originalUrl} on this server!`, 404));

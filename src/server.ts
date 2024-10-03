@@ -23,10 +23,10 @@ app.use(express.urlencoded({ limit: '500mb', extended: true }));
 
 // Set up global CORS (allow all origins)
 app.use(cors({
-  origin: "https://datingkizzora.netlify.app", // This allows requests from any origin
-  credentials: true, // Allow credentials if needed
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
+  origin: "*", // Temporarily allow all origins
+  credentials: true, // Allow credentials
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
 }));
 
 // Create HTTP server
