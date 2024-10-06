@@ -10,9 +10,13 @@ let io: SocketIOServer;
 export const initSocket = (server: HttpServer) => {
     io = new SocketIOServer(server, {
         cors: {
-            origin: ["https://datingkizzora.netlify.app", "http://localhost:3000"], // Allow both localhost and production
-            credentials: true,
-    
+            origin: [
+                "https://staging.dr544y5ozbjdm.amplifyapp.com",
+                "http://localhost:3000" // Add your local development URL here
+            ],
+            methods: ["GET", "POST"], // Specify allowed HTTP methods
+            allowedHeaders: ["Content-Type"], // Specify allowed headers
+            credentials: true, // Allow credentials such as cookies
         },
     });
 

@@ -12,8 +12,13 @@ let io;
 const initSocket = (server) => {
     io = new socket_io_1.Server(server, {
         cors: {
-            origin: "https://datingkizzora.netlify.app", // Allow any origin
-            credentials: true, // If you're using credentials such as cookies
+            origin: [
+                "https://staging.dr544y5ozbjdm.amplifyapp.com",
+                "http://localhost:3000" // Add your local development URL here
+            ],
+            methods: ["GET", "POST"], // Specify allowed HTTP methods
+            allowedHeaders: ["Content-Type"], // Specify allowed headers
+            credentials: true, // Allow credentials such as cookies
         },
     });
     io.on('connection', (socket) => {
