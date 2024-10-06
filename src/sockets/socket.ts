@@ -10,13 +10,9 @@ let io: SocketIOServer;
 export const initSocket = (server: HttpServer) => {
     io = new SocketIOServer(server, {
         cors: {
-            origin: [
-                "https://staging.dr544y5ozbjdm.amplifyapp.com",
-                "http://localhost:3000" // Add your local development URL here
-            ],
-            methods: ["GET", "POST"], // Specify allowed HTTP methods
-            allowedHeaders: ["Content-Type"], // Specify allowed headers
-            credentials: true, // Allow credentials such as cookies
+            origin: "*", // Allow both localhost and production
+            credentials: true,
+    
         },
     });
 
