@@ -23,7 +23,7 @@ app.use(express.urlencoded({ limit: '500mb', extended: true }));
 
 // Set up global CORS (allow all origins)
 app.use(cors({
-  origin: "*", // Temporarily allow all origins
+  origin: "https://www.kizzora.fun", // Temporarily allow all origins
   credentials: true, // Allow credentials
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization'],

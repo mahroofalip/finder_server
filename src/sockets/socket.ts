@@ -10,7 +10,7 @@ let io: SocketIOServer;
 export const initSocket = (server: HttpServer) => {
     io = new SocketIOServer(server, {
         cors: {
-            origin: "*", // Allow both localhost and production
+            origin: "https://www.kizzora.fun", // Allow both localhost and production
             credentials: true,
         },
     });
