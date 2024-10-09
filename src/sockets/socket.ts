@@ -10,7 +10,7 @@ let io: SocketIOServer;
 export const initSocket = (server: HttpServer) => {
     io = new SocketIOServer(server, {
         cors: {
-            origin: "https://www.kizzora.fun", // Allow both localhost and production
+            origin: "https://staging.dwcma0h57kpdh.amplifyapp.com", // Allow both localhost and production
             credentials: true,
         },
     });
