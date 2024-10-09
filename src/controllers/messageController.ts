@@ -253,7 +253,7 @@ import BlockedUsers from '../models/BlockedUsers';
             }
     
             // Notify the user
-            notifyUser(message.dataValues, userId);
+           await notifyUser(message.dataValues, userId);
     
             // Commit the transaction
             await transaction.commit();

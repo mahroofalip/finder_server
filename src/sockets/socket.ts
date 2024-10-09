@@ -12,7 +12,6 @@ export const initSocket = (server: HttpServer) => {
         cors: {
             origin: "*", // Allow both localhost and production
             credentials: true,
-    
         },
     });
 
@@ -22,6 +21,16 @@ export const initSocket = (server: HttpServer) => {
         socket.on('disconnect', () => {
             console.log(`User disconnected: ${socket.id}`);
         });
+
+        // Handle any errors for this socket connection
+        socket.on('error', (error) => {
+            console.error(`Error on socket ${socket.id}:`, error);
+        });
+    });
+
+    // Handle server-wide error
+    io.on('error', (error) => {
+        console.error('Socket.IO server error:', error);
     });
 };
 
@@ -29,6 +38,8 @@ export const initSocket = (server: HttpServer) => {
 export const notifyUser = (message: any, senderId: any) => {
     if (io) {
         io.emit('receive-message', { ...message, senderId });
+        console.log("sssssssssssssssssssssssssssffffffffffffffffffffffffffffffffff",message,senderId);
+        
     } else {
         console.error('Socket.IO not initialized');
     }
